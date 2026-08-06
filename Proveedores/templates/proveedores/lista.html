@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Proveedores</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial; background: #f0f2f5; padding: 20px; }
+        .container { max-width: 800px; margin: auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        h1 { color: #333; }
+        .btn-agregar {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn-agregar:hover { background: #218838; }
+        .card {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card strong { font-size: 18px; color: #333; }
+        .card .direccion { color: #666; margin-top: 5px; }
+        .vacio { text-align: center; color: #666; padding: 40px; background: white; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Proveedores</h1>
+            <a href="{% url 'agregar' %}" class="btn-agregar">+ Agregar Proveedor</a>
+        </div>
+
+        {% if proveedores %}
+            {% for proveedor in proveedores %}
+                <div class="card">
+                    <div>
+                        <strong>{{ proveedor.nombre }}</strong>
+                        <div class="direccion">📍 {{ proveedor.direccion }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="vacio">
+                <p>No hay proveedores registrados</p>
+                <p style="margin-top: 10px;">
+                    <a href="{% url 'agregar' %}" style="color: #28a745;">Agregar el primero</a>
+                </p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
