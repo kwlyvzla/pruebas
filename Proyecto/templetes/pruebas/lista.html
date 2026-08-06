@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mis Tareas</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        .tarea { border: 1px solid #ddd; padding: 10px; margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <h1>📋 Lista de Tareas</h1>
+    
+    {% if tareas %}
+        {% for tarea in tareas %}
+            <div class="tarea">
+                <strong>{{ tarea.titulo }}</strong>
+                {% if tarea.completada %}
+                    <span style="color: green;">✅ Completada</span>
+                {% endif %}
+                <br>
+                {{ tarea.descripcion }}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No hay tareas aún</p>
+    {% endif %}
+    
+    <p><a href="/admin/">Agregar tareas desde el panel admin</a></p>
+</body>
+</html>
