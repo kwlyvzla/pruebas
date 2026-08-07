@@ -1,5 +1,4 @@
 from django.contrib import admin
-from .models import Proveedores
+from .models import Proveedor  # ← SINGULAR
 
-admin.site.register(Proveedores)
-
+admin.site.register(Proveedor)  # ← SINGULAR

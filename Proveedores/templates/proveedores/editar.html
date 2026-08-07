@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Proveedor</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial; background: #f0f2f5; padding: 20px; }
+        .container { max-width: 600px; margin: auto; }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 { color: #333; margin-bottom: 20px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea { resize: vertical; min-height: 80px; }
+        .btn-actualizar {
+            background: #ffc107;
+            color: #333;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn-actualizar:hover { background: #e0a800; }
+        .btn-cancelar {
+            background: #6c757d;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+        .btn-cancelar:hover { background: #5a6268; }
+        .buttons { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>✏️ Editar Proveedores</h1>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="nombre">Nombre del Proveedores</label>
+                    <input type="text" id="nombre" name="nombre" value="{{ proveedor.nombre }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="direccion">Dirección</label>
+                    <textarea id="direccion" name="direccion" required>{{ proveedor.direccion }}</textarea>
+                </div>
+                
+                <div class="buttons">
+                    <button type="submit" class="btn-actualizar">Actualizar</button>
+                    <a href="{% url 'lista' %}" class="btn-cancelar">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -5,8 +5,15 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: Arial; background: #f0f2f5; padding: 20px; }
-        .container { max-width: 800px; margin: auto; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .container { max-width: 900px; margin: auto; }
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
         h1 { color: #333; }
         .btn-agregar {
             background: #28a745;
@@ -14,44 +21,119 @@
             padding: 10px 20px;
             text-decoration: none;
             border-radius: 5px;
+            display: inline-block;
+            transition: 0.3s;
         }
         .btn-agregar:hover { background: #218838; }
+        
         .card {
             background: white;
-            padding: 15px;
+            padding: 15px 20px;
             margin-bottom: 10px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            transition: 0.2s;
         }
-        .card strong { font-size: 18px; color: #333; }
-        .card .direccion { color: #666; margin-top: 5px; }
-        .vacio { text-align: center; color: #666; padding: 40px; background: white; border-radius: 8px; }
+        .card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        
+        .info {
+            flex: 1;
+            min-width: 200px;
+        }
+        .info strong { 
+            font-size: 18px; 
+            color: #333;
+            display: block;
+        }
+        .info .direccion { 
+            color: #666; 
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        
+        .acciones {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .btn-editar {
+            background: #ffc107;
+            color: #333;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-editar:hover { background: #e0a800; }
+        
+        .btn-eliminar {
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-eliminar:hover { background: #c82333; }
+        
+        .vacio { 
+            text-align: center; 
+            color: #666; 
+            padding: 40px; 
+            background: white; 
+            border-radius: 8px; 
+        }
+        .vacio a { color: #28a745; text-decoration: none; }
+        .vacio a:hover { text-decoration: underline; }
+        
+        .contador {
+            background: #e9ecef;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #495057;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>📋 Proveedores</h1>
+            <div>
+                <h1>📋 Proveedores</h1>
+                <span class="contador">{{ proveedores|length }} proveedores</span>
+            </div>
             <a href="{% url 'agregar' %}" class="btn-agregar">+ Agregar Proveedor</a>
         </div>
 
         {% if proveedores %}
-            {% for proveedor in proveedores %}
-                <div class="card">
-                    <div>
-                        <strong>{{ proveedor.nombre }}</strong>
-                        <div class="direccion">📍 {{ proveedor.direccion }}</div>
-                    </div>
+            {% for proveedor in proveedores %}  <!-- ← proveedores (minúscula, plural) -->
+             <div class="card">
+                <div class="info">
+                    <strong>{{ proveedor.nombre }}</strong>
+                    <div class="direccion">📍 {{ proveedor.direccion }}</div>
                 </div>
+            <div class="acciones">
+                <a href="{% url 'editar' proveedor.id %}" class="btn-editar">✏️ Editar</a>
+                <a href="{% url 'eliminar' proveedor.id %}" class="btn-eliminar">🗑️ Eliminar</a>
+            </div>
+            </div>
             {% endfor %}
         {% else %}
             <div class="vacio">
                 <p>No hay proveedores registrados</p>
                 <p style="margin-top: 10px;">
-                    <a href="{% url 'agregar' %}" style="color: #28a745;">Agregar el primero</a>
+                    <a href="{% url 'agregar' %}">➕ Agregar el primer proveedor</a>
                 </p>
             </div>
         {% endif %}
