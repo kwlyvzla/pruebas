@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Productos</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial; background: #f0f2f5; padding: 20px; }
+        .container { max-width: 1100px; margin: auto; }
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        h1 { color: #333; }
+        .btn-agregar {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            transition: 0.3s;
+        }
+        .btn-agregar:hover { background: #218838; }
+        
+        table {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        th {
+            background: #343a40;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        tr:hover { background: #f8f9fa; }
+        
+        .btn-editar {
+            background: #ffc107;
+            color: #333;
+            padding: 5px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        .btn-editar:hover { background: #e0a800; }
+        
+        .btn-eliminar {
+            background: #dc3545;
+            color: white;
+            padding: 5px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        .btn-eliminar:hover { background: #c82333; }
+        
+        .activo { color: #28a745; font-weight: bold; }
+        .inactivo { color: #dc3545; font-weight: bold; }
+        .vacio { text-align: center; padding: 40px; color: #666; }
+        .contador { 
+            background: #e9ecef; 
+            padding: 5px 12px; 
+            border-radius: 20px; 
+            font-size: 14px; 
+        }
+        .menu {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+        }
+        .menu a {
+            color: #007bff;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            background: white;
+        }
+        .menu a:hover { background: #e9ecef; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="menu">
+            <a href="/">🏠 Proveedores</a>
+            <a href="/productos/" style="background: #007bff; color: white;">📦 Productos</a>
+        </div>
+        
+        <div class="header">
+            <div>
+                <h1>📦 Productos</h1>
+                <span class="contador">{{ productos|length }} productos</span>
+            </div>
+            <a href="{% url 'agregar_producto' %}" class="btn-agregar">+ Agregar Producto</a>
+        </div>
+
+        {% if productos %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Proveedor</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                <tr>
+                    <td><strong>{{ producto.nombre }}</strong></td>
+                    <td>{{ producto.descripcion|truncatechars:30 }}</td>
+                    <td>${{ producto.precio }}</td>
+                    <td>{{ producto.stock }}</td>
+                    <td>{{ producto.proveedor.nombre|default:"Sin proveedor" }}</td>
+                    <td>
+                        <span class="{% if producto.activo %}activo{% else %}inactivo{% endif %}">
+                            {% if producto.activo %}✅ Activo{% else %}❌ Inactivo{% endif %}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{% url 'editar_producto' producto.id %}" class="btn-editar">✏️ Editar</a>
+                        <a href="{% url 'eliminar_producto' producto.id %}" class="btn-eliminar">🗑️</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="vacio">
+            <p>No hay productos registrados</p>
+            <p style="margin-top: 10px;">
+                <a href="{% url 'agregar_producto' %}" style="color: #28a745;">➕ Agregar el primer producto</a>
+            </p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
