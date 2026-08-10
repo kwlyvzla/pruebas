@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Proveedor  # ← Modelo en SINGULAR
+from .models import Proveedor 
 
 def lista_proveedores(request):
-    proveedores = Proveedor.objects.all().order_by('nombre')  # ← Proveedor (sin "es")
+    proveedores = Proveedor.objects.all().order_by('nombre')  
     return render(request, 'Proveedores/lista.html', {'proveedores': proveedores})
 
 def agregar_proveedor(request):
@@ -11,13 +11,13 @@ def agregar_proveedor(request):
         direccion = request.POST.get('direccion')
         
         if nombre and direccion:
-            Proveedor.objects.create(nombre=nombre, direccion=direccion)  # ← Proveedor
+            Proveedor.objects.create(nombre=nombre, direccion=direccion) 
             return redirect('lista')
     
     return render(request, 'Proveedores/agregar.html')
 
 def editar_proveedor(request, id):
-    proveedor = get_object_or_404(Proveedor, id=id)  # ← Proveedor
+    proveedor = get_object_or_404(Proveedor, id=id)  
     
     if request.method == 'POST':
         nombre = request.POST.get('nombre')
@@ -32,7 +32,7 @@ def editar_proveedor(request, id):
     return render(request, 'Proveedores/editar.html', {'proveedor': proveedor})
 
 def eliminar_proveedor(request, id):
-    proveedor = get_object_or_404(Proveedor, id=id)  # ← Proveedor
+    proveedor = get_object_or_404(Proveedor, id=id)  
     
     if request.method == 'POST':
         proveedor.delete()

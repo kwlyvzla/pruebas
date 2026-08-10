@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Agregar Cliente - Sistema de Gestión{% endblock %}
+
+{% block contenido %}
+<style>
+    .card {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        max-width: 600px;
+        margin: auto;
+    }
+    h1 { color: #333; margin-bottom: 20px; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+    input, textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    textarea { resize: vertical; min-height: 80px; }
+    .form-check {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .form-check input { width: auto; }
+    .btn-guardar {
+        background: #28a745;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .btn-guardar:hover { background: #218838; }
+    .btn-cancelar {
+        background: #6c757d;
+        color: white;
+        padding: 12px 30px;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-left: 10px;
+    }
+    .btn-cancelar:hover { background: #5a6268; }
+    .buttons { margin-top: 20px; }
+    .help-text { font-size: 12px; color: #999; margin-top: 5px; }
+</style>
+
+<div class="card">
+    <h1>➕ Agregar Cliente</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="nombre">Nombre completo *</label>
+            <input type="text" id="nombre" name="nombre" required placeholder="Ej: Juan Pérez García">
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Correo electrónico *</label>
+            <input type="email" id="email" name="email" required placeholder="Ej: juan@ejemplo.com">
+        </div>
+        
+        <div class="form-group">
+            <label for="telefono">Teléfono *</label>
+            <input type="tel" id="telefono" name="telefono" required placeholder="Ej: 55-1234-5678">
+        </div>
+        
+        <div class="form-group">
+            <label for="direccion">Dirección *</label>
+            <textarea id="direccion" name="direccion" required placeholder="Ej: Calle Principal #123, Colonia Centro, Ciudad"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="rfc">RFC</label>
+            <input type="text" id="rfc" name="rfc" placeholder="Ej: PEREJ123456789">
+            <div class="help-text">Opcional - 13 caracteres</div>
+        </div>
+        
+        <div class="form-group">
+            <label for="empresa">Empresa</label>
+            <input type="text" id="empresa" name="empresa" placeholder="Ej: Mi Empresa S.A. de C.V.">
+            <div class="help-text">Opcional</div>
+        </div>
+        
+        <div class="form-group">
+            <div class="form-check">
+                <input type="checkbox" id="activo" name="activo" checked>
+                <label for="activo" style="margin: 0;">Cliente activo</label>
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <button type="submit" class="btn-guardar">Guardar</button>
+            <a href="{% url 'lista_clientes' %}" class="btn-cancelar">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

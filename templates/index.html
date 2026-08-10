@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Inicio - Sistema de Gestión{% endblock %}
+
+{% block contenido %}
+<style>
+    .welcome {
+        text-align: center;
+        padding: 40px 20px;
+    }
+    .welcome h1 {
+        font-size: 36px;
+        color: #1a1a2e;
+        margin-bottom: 10px;
+    }
+    .welcome p {
+        color: #666;
+        font-size: 18px;
+        margin-bottom: 40px;
+    }
+    
+    .grid-menu {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    .card-menu {
+        background: white;
+        padding: 40px 30px;
+        border-radius: 16px;
+        text-align: center;
+        text-decoration: none;
+        color: #333;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        border: 3px solid transparent;
+    }
+    
+    .card-menu:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
+    
+    .card-menu .icono {
+        font-size: 64px;
+        display: block;
+        margin-bottom: 15px;
+    }
+    
+    .card-menu h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+        color: #1a1a2e;
+    }
+    
+    .card-menu p {
+        color: #666;
+        font-size: 15px;
+        margin: 0;
+    }
+    
+    .card-menu.proveedores {
+        border-color: #28a745;
+    }
+    
+    .card-menu.proveedores:hover {
+        background: #f0fff4;
+    }
+    
+    .card-menu.productos {
+        border-color: #007bff;
+    }
+    
+    .card-menu.productos:hover {
+        background: #f0f8ff;
+    }
+    
+    .card-menu.admin {
+        border-color: #6c757d;
+    }
+    
+    .card-menu.admin:hover {
+        background: #f8f9fa;
+    }
+    
+    .badge {
+        display: inline-block;
+        background: #e9ecef;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        color: #666;
+        margin-top: 10px;
+    }
+    
+    @media (max-width: 600px) {
+        .welcome h1 { font-size: 28px; }
+        .grid-menu { grid-template-columns: 1fr; }
+    }
+    .card-menu.clientes {
+    border-color: #fd7e14;
+    }
+
+    .card-menu.clientes:hover {
+    background: #fff5f0;
+    }
+</style>
+
+<div class="welcome">
+    <h1>🏢 Sistema de Gestión</h1>
+    <p>Selecciona una opción para comenzar</p>
+</div>
+
+<div class="grid-menu">
+    <a href="/proveedores/" class="card-menu proveedores">
+        <span class="icono">👥</span>
+        <h2>Proveedores</h2>
+        <p>Gestiona tus proveedores</p>
+    </a>
+    
+    <a href="/productos/" class="card-menu productos">
+        <span class="icono">📦</span>
+        <h2>Productos</h2>
+        <p>Gestiona tus productos</p>
+    </a>
+    
+    <a href="/clientes/" class="card-menu clientes">
+        <span class="icono">👤</span>
+        <h2>Clientes</h2>
+        <p>Gestiona tus clientes</p>
+    </a>
+    
+    <!--a href="/admin/" class="card-menu admin">
+        <span class="icono">⚙️</span>
+        <h2>Administración</h2>
+        <p>Panel de administración</p>
+        <span class="badge">Requiere login</span>
+    </a-->
+</div>
+{% endblock %}

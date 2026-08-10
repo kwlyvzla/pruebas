@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Proveedores - Sistema de Gestión{% endblock %}
+{% block titulo %}Clientes - Sistema de Gestión{% endblock %}
 
 {% block contenido %}
 <style>
@@ -57,10 +57,14 @@
         color: #333;
         display: block;
     }
-    .info .direccion {
+    .info .detalle {
         color: #666;
-        margin-top: 5px;
         font-size: 14px;
+        margin-top: 3px;
+    }
+    .info .detalle i {
+        font-style: normal;
+        margin-right: 5px;
     }
     
     .acciones {
@@ -90,6 +94,9 @@
     }
     .btn-eliminar:hover { background: #c82333; }
     
+    .activo { color: #28a745; font-weight: bold; }
+    .inactivo { color: #dc3545; font-weight: bold; }
+    
     .vacio {
         text-align: center;
         color: #666;
@@ -103,30 +110,40 @@
 
 <div class="header">
     <div>
-        <h1>👥 Proveedores</h1>
-        <span class="contador">{{ proveedores|length }} proveedores registrados</span>
+        <h1>👤 Clientes</h1>
+        <span class="contador">{{ clientes|length }} clientes registrados</span>
     </div>
-    <a href="{% url 'agregar' %}" class="btn-agregar">+ Agregar Proveedor</a>
+    <a href="{% url 'agregar_cliente' %}" class="btn-agregar">+ Agregar Cliente</a>
 </div>
 
-{% if proveedores %}
-    {% for proveedor in proveedores %}
+{% if clientes %}
+    {% for cliente in clientes %}
         <div class="card">
             <div class="info">
-                <strong>{{ proveedor.nombre }}</strong>
-                <div class="direccion">📍 {{ proveedor.direccion }}</div>
+                <strong>{{ cliente.nombre }}</strong>
+                <div class="detalle">📧 {{ cliente.email }}</div>
+                <div class="detalle">📞 {{ cliente.telefono }}</div>
+                <div class="detalle">📍 {{ cliente.direccion }}</div>
+                {% if cliente.empresa %}
+                    <div class="detalle">🏢 {{ cliente.empresa }}</div>
+                {% endif %}
+                <div class="detalle">
+                    <span class="{% if cliente.activo %}activo{% else %}inactivo{% endif %}">
+                        {% if cliente.activo %}✅ Activo{% else %}❌ Inactivo{% endif %}
+                    </span>
+                </div>
             </div>
             <div class="acciones">
-                <a href="{% url 'editar' proveedor.id %}" class="btn-editar">✏️ Editar</a>
-                <a href="{% url 'eliminar' proveedor.id %}" class="btn-eliminar">🗑️ Eliminar</a>
+                <a href="{% url 'editar_cliente' cliente.id %}" class="btn-editar">✏️ Editar</a>
+                <a href="{% url 'eliminar_cliente' cliente.id %}" class="btn-eliminar">🗑️ Eliminar</a>
             </div>
         </div>
     {% endfor %}
 {% else %}
     <div class="vacio">
-        <p>No hay proveedores registrados</p>
+        <p>No hay clientes registrados</p>
         <p style="margin-top: 10px;">
-            <a href="{% url 'agregar' %}">➕ Agregar el primer proveedor</a>
+            <a href="{% url 'agregar_cliente' %}">➕ Agregar el primer cliente</a>
         </p>
     </div>
 {% endif %}

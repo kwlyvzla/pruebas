@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Sistema de Gestión{% endblock %}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f0f2f5;
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 0 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .nav-brand .logo {
+            font-size: 30px;
+        }
+        
+        .nav-brand:hover {
+            color: #ffd700;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* ===== BOTÓN INICIO (NUEVO) ===== */
+        .btn-inicio {
+            background: #17a2b8;
+            color: white;
+        }
+        .btn-inicio:hover {
+            background: #138496;
+        }
+        .btn-inicio.active {
+            background: #0f7a8a;
+            box-shadow: 0 0 20px rgba(23, 162, 184, 0.5);
+        }
+        
+        .btn-proveedores {
+            background: #28a745;
+            color: white;
+        }
+        .btn-proveedores:hover {
+            background: #218838;
+        }
+        .btn-proveedores.active {
+            background: #1e7e34;
+            box-shadow: 0 0 20px rgba(40, 167, 69, 0.5);
+        }
+        
+        .btn-productos {
+            background: #007bff;
+            color: white;
+        }
+        .btn-productos:hover {
+            background: #0056b3;
+        }
+        .btn-productos.active {
+            background: #004085;
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
+        }
+        
+        .btn-admin {
+            background: #6c757d;
+            color: white;
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+        .btn-admin:hover {
+            background: #5a6268;
+        }
+        .btn-admin.active {
+            background: #4a5259;
+            box-shadow: 0 0 20px rgba(108, 117, 125, 0.5);
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .menu-toggle:hover {
+            color: #ffd700;
+        }
+        
+        .main-content {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: #1a1a2e;
+                padding: 20px;
+                gap: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            }
+            
+            .nav-menu.open {
+                display: flex;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 12px;
+            }
+            
+            .nav-brand {
+                font-size: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nav-brand .logo-text {
+                display: none;
+            }
+        }
+
+        .btn-clientes {
+            background: #fd7e14;
+            color: white;
+        }
+        .btn-clientes:hover {
+            background: #e06b0a;
+        }
+        .btn-clientes.active {
+            background: #c45a08;
+            box-shadow: 0 0 20px rgba(253, 126, 20, 0.5);
+        }   
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Logo que lleva al Inicio -->
+            <a href="/" class="nav-brand">
+                <span class="logo">🏢</span>
+                <span class="logo-text">Sistema de Gestión</span>
+            </a>
+            
+            <!-- Botón menú hamburguesa (móvil) -->
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            
+            <!-- ===== MENÚ DE NAVEGACIÓN CON BOTÓN INICIO ===== -->
+            <div class="nav-menu" id="navMenu">
+                <!-- 🏠 BOTÓN INICIO -->
+                <a href="/" class="nav-btn btn-inicio {% if request.path == '/' %}active{% endif %}">
+                    🏠 Inicio
+                </a>
+                
+                <!-- 👥 BOTÓN PROVEEDORES -->
+                <a href="/proveedores/" class="nav-btn btn-proveedores {% if '/proveedores/' in request.path %}active{% endif %}">
+                    👥 Proveedores
+                </a>
+                
+                <!-- 📦 BOTÓN PRODUCTOS -->
+                <a href="/productos/" class="nav-btn btn-productos {% if '/productos/' in request.path %}active{% endif %}">
+                    📦 Productos
+                </a>
+
+                <!-- 👤 BOTÓN CLIENTES -->
+                <a href="/clientes/" class="nav-btn btn-clientes {% if '/clientes/' in request.path %}active{% endif %}">
+                    👤 Clientes
+                </a>
+                
+                <!-- ⚙️ BOTÓN ADMIN
+                <a href="/admin/" class="nav-btn btn-admin {% if '/admin/' in request.path %}active{% endif %}">
+                    ⚙️ Admin
+                </a-->
+            </div>
+        </div>
+    </nav>
+    
+    <div class="main-content">
+        {% block contenido %}
+        {% endblock %}
+    </div>
+    
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('open');
+        }
+        
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.getElementById('navMenu').classList.remove('open');
+            });
+        });
+        
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('navMenu');
+            const toggle = document.querySelector('.menu-toggle');
+            if (!menu.contains(event.target) && !toggle.contains(event.target)) {
+                menu.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>
