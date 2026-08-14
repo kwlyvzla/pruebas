@@ -1,100 +1,89 @@
-import serial
-import serial.tools.list_ports
+import random
 import threading
-import json
-from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
+import time
+from .models import RegistroPeso
 
-class BasculaUSB:
+class BasculaSimulador:
+    """
+    Simulador de bascula con registro automatico
+    """
     def __init__(self):
-        self.serial = None
         self.is_connected = False
-        self.puerto = None
-        self.lectura_thread = None
+        self.peso_actual = 0.0
         self.corriendo = False
+        self.lectura_thread = None
+        self.intervalo = 2.0  # Segundos entre lecturas
+        self.min_peso = 0.5
+        self.max_peso = 5.0
+        self.variacion_maxima = 0.3
+        self.ultimo_peso = 0.0
+        self.registros_automaticos = True  # Activar registro automatico
         
-    def listar_puertos(self):
-        """Lista todos los puertos USB disponibles"""
-        ports = serial.tools.list_ports.comports()
-        return [port.device for port in ports]
-    
-    def conectar(self, puerto, baudrate=115200):
-        """Conectar a la báscula por USB"""
-        try:
-            self.serial = serial.Serial(
-                port=puerto,
-                baudrate=baudrate,
-                bytesize=serial.EIGHTBITS,
-                parity=serial.PARITY_NONE,
-                stopbits=serial.STOPBITS_ONE,
-                timeout=1
-            )
-            self.is_connected = True
-            self.puerto = puerto
-            self.corriendo = True
+    def conectar(self):
+        """Conectar el simulador"""
+        if self.is_connected:
+            return True, "Simulador ya esta conectado"
             
-            # Iniciar hilo de lectura
-            self.lectura_thread = threading.Thread(target=self._leer_datos)
-            self.lectura_thread.daemon = True
-            self.lectura_thread.start()
-            
-            return True, "Conectado correctamente"
-        except Exception as e:
-            return False, f"Error al conectar: {str(e)}"
+        self.is_connected = True
+        self.corriendo = True
+        self.peso_actual = random.uniform(self.min_peso, self.max_peso)
+        
+        # Iniciar hilo de simulacion
+        self.lectura_thread = threading.Thread(target=self._simular_lecturas)
+        self.lectura_thread.daemon = True
+        self.lectura_thread.start()
+        
+        return True, "Simulador conectado - Registro automatico activado"
     
     def desconectar(self):
-        """Desconectar la báscula"""
+        """Desconectar el simulador"""
         self.corriendo = False
         self.is_connected = False
-        if self.serial and self.serial.is_open:
-            self.serial.close()
-        return True, "Desconectado correctamente"
+        if self.lectura_thread:
+            self.lectura_thread.join(timeout=1)
+        return True, "Simulador desconectado"
     
-    def _leer_datos(self):
-        """Hilo para leer datos de la báscula continuamente"""
+    def _simular_lecturas(self):
+        """Simular lecturas continuas con registro automatico"""
+        contador = 0
         while self.corriendo and self.is_connected:
             try:
-                if self.serial and self.serial.in_waiting > 0:
-                    # Leer línea de datos
-                    linea = self.serial.readline().decode('utf-8').strip()
-                    if linea:
-                        # Procesar el peso (formato depende de la báscula)
-                        peso = self._procesar_peso(linea)
-                        if peso is not None:
-                            # Enviar a WebSocket
-                            self._enviar_peso(peso)
+                # Generar variacion del peso
+                variacion = random.uniform(-self.variacion_maxima, self.variacion_maxima)
+                nuevo_peso = self.peso_actual + variacion
+                nuevo_peso = max(self.min_peso, min(self.max_peso, nuevo_peso))
+                self.peso_actual = nuevo_peso
+                self.ultimo_peso = round(self.peso_actual, 3)
+                
+                # Registrar automaticamente cada 3 lecturas
+                contador += 1
+                if contador % 3 == 0 and self.registros_automaticos:
+                    self._registrar_peso(self.ultimo_peso)
+                
+                time.sleep(self.intervalo)
+                
             except Exception as e:
-                print(f"Error al leer datos: {e}")
+                print(f"Error en simulacion: {e}")
                 break
     
-    def _procesar_peso(self, linea):
-        """Procesar la línea de datos de la báscula"""
-        # Aquí debes adaptar según el formato de tu báscula
-        # Ejemplo: formato "   0.000 kg"
+    def _registrar_peso(self, peso):
+        """Registrar peso en la base de datos"""
         try:
-            # Buscar número en la línea
-            import re
-            numeros = re.findall(r'[-+]?\d*\.?\d+', linea)
-            if numeros:
-                return float(numeros[0])
-        except:
-            pass
-        return None
-    
-    def _enviar_peso(self, peso):
-        """Enviar peso a través de WebSocket"""
-        try:
-            channel_layer = get_channel_layer()
-            async_to_sync(channel_layer.group_send)(
-                "peso_group",
-                {
-                    'type': 'peso_update',
-                    'peso': peso,
-                    'fecha': None  # Se agrega automáticamente en el consumer
-                }
-            )
+            RegistroPeso.objects.create(peso=peso)
+            print(f"Peso registrado automaticamente: {peso} kg")
         except Exception as e:
-            print(f"Error al enviar peso: {e}")
+            print(f"Error al registrar peso: {e}")
+    
+    def obtener_peso(self):
+        """Obtener el ultimo peso simulado"""
+        return self.ultimo_peso
+    
+    def registrar_peso_manual(self, peso):
+        """Registrar un peso manualmente"""
+        if peso is not None and peso > 0:
+            self._registrar_peso(peso)
+            return True
+        return False
 
-# Instancia global
-bascula = BasculaUSB()
+# Instancia global del simulador
+simulador = BasculaSimulador()

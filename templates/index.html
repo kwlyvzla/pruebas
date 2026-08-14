@@ -23,7 +23,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 30px;
-        max-width: 800px;
+        max-width: 1000px;
         margin: 0 auto;
         padding: 20px;
     }
@@ -66,7 +66,6 @@
     .card-menu.proveedores {
         border-color: #28a745;
     }
-    
     .card-menu.proveedores:hover {
         background: #f0fff4;
     }
@@ -74,15 +73,29 @@
     .card-menu.productos {
         border-color: #007bff;
     }
-    
     .card-menu.productos:hover {
         background: #f0f8ff;
     }
     
+    .card-menu.clientes {
+        border-color: #fd7e14;
+    }
+    .card-menu.clientes:hover {
+        background: #fff5f0;
+    }
+    
+    .card-menu.bascula {
+    border-color: #17a2b8;
+    }
+
+    .card-menu.bascula:hover {
+        background: #f0f8ff;
+    }
+
     .card-menu.admin {
         border-color: #6c757d;
     }
-    
+
     .card-menu.admin:hover {
         background: #f8f9fa;
     }
@@ -101,13 +114,6 @@
         .welcome h1 { font-size: 28px; }
         .grid-menu { grid-template-columns: 1fr; }
     }
-    .card-menu.clientes {
-    border-color: #fd7e14;
-    }
-
-    .card-menu.clientes:hover {
-    background: #fff5f0;
-    }
 </style>
 
 <div class="welcome">
@@ -120,18 +126,28 @@
         <span class="icono">👥</span>
         <h2>Proveedores</h2>
         <p>Gestiona tus proveedores</p>
+        <span class="badge">CRUD completo</span>
     </a>
     
     <a href="/productos/" class="card-menu productos">
         <span class="icono">📦</span>
         <h2>Productos</h2>
         <p>Gestiona tus productos</p>
+        <span class="badge">CRUD completo</span>
     </a>
     
     <a href="/clientes/" class="card-menu clientes">
         <span class="icono">👤</span>
         <h2>Clientes</h2>
         <p>Gestiona tus clientes</p>
+        <span class="badge">CRUD completo</span>
+    </a>
+    
+   <a href="/bascula/" class="card-menu bascula">
+        <span class="icono">⚖️</span>
+        <h2>Báscula</h2>
+        <p>Registro de pesos en tiempo real</p>
+        <span class="badge">USB / Tiempo real</span>
     </a>
     
     <!--a href="/admin/" class="card-menu admin">

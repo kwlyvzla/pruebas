@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load static %}
 
 {% block titulo %}Báscula - Sistema de Gestión{% endblock %}
 
@@ -11,540 +10,212 @@
         padding: 20px;
     }
     
-    .display-peso {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        border-radius: 16px;
-        padding: 40px;
-        text-align: center;
-        margin-bottom: 30px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-    
-    .display-peso .valor {
-        font-size: 72px;
-        font-weight: bold;
-        color: #00ff88;
-        text-shadow: 0 0 30px rgba(0,255,136,0.3);
-        font-family: 'Courier New', monospace;
-    }
-    
-    .display-peso .unidad {
-        font-size: 24px;
-        color: #88ffbb;
-        margin-left: 10px;
-    }
-    
-    .display-peso .estado {
-        font-size: 18px;
-        color: #88bbff;
-        margin-top: 15px;
-    }
-    
-    .display-peso .estado.conectado {
-        color: #00ff88;
-    }
-    
-    .display-peso .estado.desconectado {
-        color: #ff4444;
-    }
-    
-    .display-peso .fecha-hora {
-        font-size: 16px;
-        color: #8899bb;
-        margin-top: 10px;
-    }
-    
-    .display-peso .registrar-btn {
-        margin-top: 20px;
-        background: #28a745;
-        color: white;
-        border: none;
-        padding: 12px 40px;
-        border-radius: 8px;
-        font-size: 18px;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-    
-    .display-peso .registrar-btn:hover {
-        background: #218838;
-        transform: scale(1.05);
-    }
-    
-    .display-peso .registrar-btn:disabled {
-        background: #666;
-        cursor: not-allowed;
-    }
-    
-    .tabla-pesos {
-        background: white;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    
-    .tabla-pesos .header-tabla {
-        background: #343a40;
-        color: white;
-        padding: 15px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    
-    .tabla-pesos .header-tabla h2 {
-        margin: 0;
-        font-size: 20px;
-    }
-    
-    .tabla-pesos .header-tabla .acciones {
+    .tabs {
         display: flex;
         gap: 10px;
-    }
-    
-    .tabla-pesos .header-tabla .btn-limpiar {
-        background: #dc3545;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    
-    .tabla-pesos .header-tabla .btn-limpiar:hover {
-        background: #c82333;
-    }
-    
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    
-    th {
-        background: #f8f9fa;
-        padding: 12px;
-        text-align: left;
-        border-bottom: 2px solid #dee2e6;
-        font-weight: 600;
-        color: #495057;
-    }
-    
-    td {
-        padding: 12px;
-        border-bottom: 1px solid #dee2e6;
-    }
-    
-    tr:hover {
-        background: #f8f9fa;
-    }
-    
-    .btn-eliminar {
-        background: #dc3545;
-        color: white;
-        border: none;
-        padding: 5px 12px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 13px;
-    }
-    
-    .btn-eliminar:hover {
-        background: #c82333;
-    }
-    
-    .vacio {
-        text-align: center;
-        padding: 40px;
-        color: #666;
-    }
-    
-    .fila-nueva {
-        animation: resaltar 2s ease;
-    }
-    
-    @keyframes resaltar {
-        0% { background: #d4edda; }
-        100% { background: transparent; }
-    }
-    
-    .contador {
-        background: #e9ecef;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 14px;
-        color: #495057;
-    }
-    
-    /* Configuración USB */
-    .config-usb {
-        background: #f8f9fa;
-        padding: 15px 20px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 20px;
+        margin-bottom: 30px;
         flex-wrap: wrap;
     }
     
-    .config-usb label {
+    .tab-btn {
+        padding: 15px 30px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
         font-weight: 600;
-        color: #495057;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
     }
     
-    .config-usb select, 
-    .config-usb input {
-        padding: 8px 12px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
+    .tab-btn.principal {
+        background: #6c757d;
+        color: white;
     }
     
-    .config-usb .btn-conectar {
+    .tab-btn.principal:hover {
+        background: #5a6268;
+    }
+    
+    .tab-btn.principal.active {
+        background: #4a5259;
+        box-shadow: 0 0 20px rgba(108,117,125,0.5);
+    }
+    
+    .tab-btn.simulacion {
+        background: #28a745;
+        color: white;
+    }
+    
+    .tab-btn.simulacion:hover {
+        background: #218838;
+    }
+    
+    .tab-btn.simulacion.active {
+        background: #1e7e34;
+        box-shadow: 0 0 20px rgba(40,167,69,0.5);
+    }
+    
+    .tab-btn.real {
         background: #007bff;
         color: white;
-        border: none;
-        padding: 8px 20px;
-        border-radius: 5px;
-        cursor: pointer;
     }
     
-    .config-usb .btn-conectar:hover {
+    .tab-btn.real:hover {
         background: #0056b3;
     }
     
-    .config-usb .btn-conectar.desconectar {
-        background: #dc3545;
+    .tab-btn.real.active {
+        background: #004085;
+        box-shadow: 0 0 20px rgba(0,123,255,0.5);
     }
     
-    .config-usb .btn-conectar.desconectar:hover {
-        background: #c82333;
+    .tab-content {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+    
+    .tab-content .icono-grande {
+        font-size: 80px;
+        display: block;
+        margin-bottom: 20px;
+    }
+    
+    .tab-content h2 {
+        color: #333;
+        margin-bottom: 15px;
+    }
+    
+    .tab-content p {
+        color: #666;
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+    
+    .tab-content .btn-ir {
+        background: #007bff;
+        color: white;
+        padding: 12px 40px;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition: 0.3s;
+    }
+    
+    .tab-content .btn-ir:hover {
+        background: #0056b3;
+        transform: scale(1.05);
+    }
+    
+    .tab-content .btn-ir.verde {
+        background: #28a745;
+    }
+    
+    .tab-content .btn-ir.verde:hover {
+        background: #218838;
+    }
+    
+    .tab-content .btn-ir.azul {
+        background: #007bff;
+    }
+    
+    .tab-content .btn-ir.azul:hover {
+        background: #0056b3;
+    }
+    
+    .info-box {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 15px 0;
+        text-align: left;
+    }
+    
+    .info-box ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .info-box ul li {
+        padding: 8px 0;
+        border-bottom: 1px solid #e9ecef;
+        color: #495057;
+    }
+    
+    .info-box ul li:last-child {
+        border-bottom: none;
+    }
+    
+    .badge-feature {
+        display: inline-block;
+        background: #ffc107;
+        color: #333;
+        padding: 2px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: bold;
+        margin-left: 10px;
     }
 </style>
 
 <div class="bascula-container">
-    <!-- Configuración USB -->
-    <div class="config-usb">
-        <label>🔌 Puerto USB:</label>
-        <select id="puerto-usb">
-            <option value="COM1">COM1</option>
-            <option value="COM2">COM2</option>
-            <option value="COM3">COM3</option>
-            <option value="COM4" selected>COM4</option>
-            <option value="COM5">COM5</option>
-            <option value="COM6">COM6</option>
-        </select>
-        
-        <label>Velocidad:</label>
-        <select id="velocidad">
-            <option value="9600">9600</option>
-            <option value="19200">19200</option>
-            <option value="38400">38400</option>
-            <option value="115200" selected>115200</option>
-        </select>
-        
-        <button class="btn-conectar" id="btnConectar" onclick="conectarUSB()">
-            🔌 Conectar
-        </button>
+    <!-- PESTAÑAS -->
+    <div class="tabs">
+        <!--a href="{% url 'bascula' %}" class="tab-btn principal {% if seccion == 'principal' %}active{% endif %}">
+            📋 Inicio
+        </a-->
+        <a href="{% url 'modo_simulacion' %}" class="tab-btn simulacion {% if seccion == 'simulacion' %}active{% endif %}">
+            🖥️ Simulación
+        </a>
+        <a href="{% url 'modo_real' %}" class="tab-btn real {% if seccion == 'real' %}active{% endif %}">
+            🔌 Báscula Real
+        </a>
     </div>
     
-    <!-- Display del peso -->
-    <div class="display-peso">
-        <div>
-            <span class="valor" id="pesoDisplay">0.000</span>
-            <span class="unidad">kg</span>
-        </div>
-        <div class="estado desconectado" id="estadoDisplay">
-            ⚠️ Desconectado - Conecta la báscula
-        </div>
-        <div class="fecha-hora" id="fechaHoraDisplay">
-            📅 --/--/---- --:--:--
-        </div>
-        <button class="registrar-btn" id="btnRegistrar" onclick="registrarPeso()" disabled>
-            💾 Registrar Peso
-        </button>
-    </div>
-    
-    <!-- Tabla de registros -->
-    <div class="tabla-pesos">
-        <div class="header-tabla">
-            <h2>📋 Registros de Pesos</h2>
-            <div class="acciones">
-                <span class="contador">{{ registros|length }} registros</span>
-                <a href="{% url 'limpiar_registros' %}" class="btn-limpiar">
-                    🗑️ Limpiar todo
-                </a>
+    <!-- CONTENIDO -->
+    <div class="tab-content">
+        <span class="icono-grande">⚖️</span>
+        <h2>Sistema de Pesaje</h2>
+        <p>Selecciona un modo para comenzar</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 30px 0;">
+            <div class="info-box">
+                <h3 style="color: #28a745;">🖥️ Modo Simulación</h3>
+                <ul>
+                    <li>✅ Sin necesidad de hardware</li>
+                    <li>✅ Generación automática de pesos</li>
+                    <li>✅ Ideal para pruebas y demostraciones</li>
+                    <li>✅ Registro manual de pesos</li>
+                </ul>
+                <br>
+                <a href="{% url 'modo_simulacion' %}" class="btn-ir verde">Ir a Simulación</a>
+            </div>
+            
+            <div class="info-box">
+                <h3 style="color: #007bff;">🔌 Modo Báscula Real</h3>
+                <ul>
+                    <li>✅ Conexión USB a báscula real</li>
+                    <li>✅ Lectura en tiempo real</li>
+                    <li>✅ Configuración de puerto COM</li>
+                    <li>✅ Registro automático de pesos</li>
+                </ul>
+                <br>
+                <a href="{% url 'modo_real' %}" class="btn-ir azul">Ir a Báscula Real</a>
             </div>
         </div>
         
-        {% if registros %}
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Peso (kg)</th>
-                    <th>Fecha y Hora</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="tablaRegistros">
-                {% for registro in registros %}
-                <tr id="fila-{{ registro.id }}">
-                    <td>{{ forloop.counter }}</td>
-                    <td><strong>{{ registro.peso }}</strong></td>
-                    <td>{{ registro.fecha_registro|date:"d/m/Y H:i:s" }}</td>
-                    <td>
-                        <a href="{% url 'eliminar_registro' registro.id %}" class="btn-eliminar">🗑️</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <div class="vacio">
-            <p>No hay registros de peso</p>
-            <p style="margin-top: 10px; font-size: 14px;">
-                Conecta la báscula y registra tu primer peso
+        <div class="info-box" style="background: #e9ecef; text-align: center;">
+            <p style="margin: 0; color: #495057;">
+                📊 <strong>{{ registros|length }}</strong> registros almacenados en total
             </p>
         </div>
-        {% endif %}
     </div>
 </div>
-
-<script>
-    // Variables para WebSocket
-    let socket = null;
-    let isConnected = false;
-    let ultimoPeso = null;
-    
-    // Conectar WebSocket
-    function conectarWebSocket() {
-        if (socket && socket.readyState === WebSocket.OPEN) {
-            return;
-        }
-        
-        socket = new WebSocket('ws://' + window.location.host + '/ws/peso/');
-        
-        socket.onopen = function(e) {
-            console.log('✅ WebSocket conectado');
-            document.getElementById('estadoDisplay').textContent = '✅ Conectado - Esperando datos...';
-            document.getElementById('estadoDisplay').className = 'estado conectado';
-            document.getElementById('btnRegistrar').disabled = false;
-            isConnected = true;
-        };
-        
-        socket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            console.log('📦 Datos recibidos:', data);
-            
-            // Actualizar display
-            document.getElementById('pesoDisplay').textContent = data.peso;
-            ultimoPeso = data.peso;
-            
-            // Actualizar fecha/hora
-            if (data.fecha) {
-                document.getElementById('fechaHoraDisplay').textContent = '📅 ' + data.fecha;
-            }
-            
-            // Agregar fila a la tabla
-            agregarFilaTabla(data);
-        };
-        
-        socket.onclose = function(e) {
-            console.log('❌ WebSocket desconectado');
-            document.getElementById('estadoDisplay').textContent = '⚠️ Desconectado - Reintentando...';
-            document.getElementById('estadoDisplay').className = 'estado desconectado';
-            document.getElementById('btnRegistrar').disabled = true;
-            isConnected = false;
-            
-            // Reconectar automáticamente
-            setTimeout(conectarWebSocket, 3000);
-        };
-        
-        socket.onerror = function(e) {
-            console.error('❌ Error WebSocket:', e);
-            document.getElementById('estadoDisplay').textContent = '❌ Error de conexión';
-        };
-    }
-    
-    // Registrar peso manualmente
-    function registrarPeso() {
-        if (!isConnected || ultimoPeso === null) {
-            alert('⚠️ No hay peso registrado. Conecta la báscula primero.');
-            return;
-        }
-        
-        if (socket && socket.readyState === WebSocket.OPEN) {
-            socket.send(JSON.stringify({
-                'peso': ultimoPeso
-            }));
-            document.getElementById('estadoDisplay').textContent = '✅ Peso registrado correctamente';
-            setTimeout(() => {
-                document.getElementById('estadoDisplay').textContent = '✅ Conectado - Esperando datos...';
-            }, 2000);
-        } else {
-            alert('⚠️ No hay conexión con la báscula');
-        }
-    }
-    
-    // Agregar fila a la tabla
-    function agregarFilaTabla(data) {
-        const tbody = document.getElementById('tablaRegistros');
-        if (!tbody) return;
-        
-        // Verificar si ya existe (evitar duplicados)
-        if (document.getElementById('fila-' + data.id)) {
-            return;
-        }
-        
-        const row = document.createElement('tr');
-        row.id = 'fila-' + data.id;
-        row.className = 'fila-nueva';
-        
-        const count = tbody.children.length + 1;
-        
-        row.innerHTML = `
-            <td>${count}</td>
-            <td><strong>${data.peso}</strong></td>
-            <td>${data.fecha || '--/--/---- --:--:--'}</td>
-            <td>
-                <a href="/bascula/eliminar/${data.id}/" class="btn-eliminar">🗑️</a>
-            </td>
-        `;
-        
-        // Insertar al inicio (más reciente primero)
-        tbody.insertBefore(row, tbody.firstChild);
-        
-        // Actualizar contador
-        actualizarContador();
-    }
-    
-    // Actualizar contador
-    function actualizarContador() {
-        const contador = document.querySelector('.contador');
-        if (contador) {
-            const count = document.querySelectorAll('#tablaRegistros tr').length;
-            contador.textContent = count + ' registros';
-        }
-    }
-    
-    // Conectar USB (simulación)
-    function conectarUSB() {
-        const btn = document.getElementById('btnConectar');
-        const puerto = document.getElementById('puerto-usb').value;
-        const velocidad = document.getElementById('velocidad').value;
-        
-        if (btn.textContent.includes('Conectar')) {
-            btn.textContent = '🔌 Conectando...';
-            btn.disabled = true;
-            
-            // Simular conexión
-            setTimeout(() => {
-                btn.textContent = '🔌 Desconectar';
-                btn.className = 'btn-conectar desconectar';
-                btn.disabled = false;
-                document.getElementById('estadoDisplay').textContent = `✅ Conectado a ${puerto} a ${velocidad} baudios`;
-                document.getElementById('estadoDisplay').className = 'estado conectado';
-                document.getElementById('btnRegistrar').disabled = false;
-                
-                // Conectar WebSocket
-                conectarWebSocket();
-                
-                // Simular lecturas de peso
-                iniciarSimulacion();
-            }, 2000);
-        } else {
-            // Desconectar
-            btn.textContent = '🔌 Conectar';
-            btn.className = 'btn-conectar';
-            document.getElementById('estadoDisplay').textContent = '⚠️ Desconectado';
-            document.getElementById('estadoDisplay').className = 'estado desconectado';
-            document.getElementById('btnRegistrar').disabled = true;
-            
-            if (socket) {
-                socket.close();
-            }
-            
-            // Detener simulación
-            detenerSimulacion();
-        }
-    }
-    
-    // Simulación de lecturas de peso (para pruebas sin báscula real)
-    let intervaloSimulacion = null;
-    
-    function iniciarSimulacion() {
-        detenerSimulacion();
-        
-        let contador = 0;
-        intervaloSimulacion = setInterval(() => {
-            // Generar peso aleatorio entre 0.5 y 5.0 kg
-            const peso = (Math.random() * 4.5 + 0.5).toFixed(3);
-            contador++;
-            
-            document.getElementById('pesoDisplay').textContent = peso;
-            ultimoPeso = parseFloat(peso);
-            
-            // Solo registrar automáticamente cada 5 lecturas (simulación)
-            if (contador % 5 === 0 && socket && socket.readyState === WebSocket.OPEN) {
-                socket.send(JSON.stringify({
-                    'peso': ultimoPeso
-                }));
-            }
-            
-            // Actualizar fecha/hora
-            const now = new Date();
-            document.getElementById('fechaHoraDisplay').textContent = 
-                '📅 ' + now.toLocaleString('es-MX', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                });
-        }, 1000);
-    }
-    
-    function detenerSimulacion() {
-        if (intervaloSimulacion) {
-            clearInterval(intervaloSimulacion);
-            intervaloSimulacion = null;
-        }
-    }
-    
-    // Inicializar al cargar la página
-    document.addEventListener('DOMContentLoaded', function() {
-        // Verificar si hay conexión previa
-        const estado = document.getElementById('estadoDisplay');
-        estado.textContent = '🔌 Conecta la báscula para comenzar';
-        
-        // Actualizar fecha/hora
-        const now = new Date();
-        document.getElementById('fechaHoraDisplay').textContent = 
-            '📅 ' + now.toLocaleString('es-MX', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-        
-        // Actualizar cada segundo
-        setInterval(() => {
-            if (!document.getElementById('fechaHoraDisplay').textContent.includes('--')) {
-                const now = new Date();
-                document.getElementById('fechaHoraDisplay').textContent = 
-                    '📅 ' + now.toLocaleString('es-MX', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    });
-            }
-        }, 1000);
-    });
-</script>
 {% endblock %}

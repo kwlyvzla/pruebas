@@ -79,7 +79,6 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
         
-        /* ===== BOTÓN INICIO (NUEVO) ===== */
         .btn-inicio {
             background: #17a2b8;
             color: white;
@@ -114,6 +113,30 @@
         .btn-productos.active {
             background: #004085;
             box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
+        }
+        
+        .btn-clientes {
+            background: #fd7e14;
+            color: white;
+        }
+        .btn-clientes:hover {
+            background: #e06b0a;
+        }
+        .btn-clientes.active {
+            background: #c45a08;
+            box-shadow: 0 0 20px rgba(253, 126, 20, 0.5);
+        }
+        
+        .btn-bascula {
+            background: #17a2b8;
+            color: white;
+        }
+        .btn-bascula:hover {
+            background: #138496;
+        }
+        .btn-bascula.active {
+            background: #0f7a8a;
+            box-shadow: 0 0 20px rgba(23, 162, 184, 0.5);
         }
         
         .btn-admin {
@@ -188,56 +211,35 @@
                 display: none;
             }
         }
-
-        .btn-clientes {
-            background: #fd7e14;
-            color: white;
-        }
-        .btn-clientes:hover {
-            background: #e06b0a;
-        }
-        .btn-clientes.active {
-            background: #c45a08;
-            box-shadow: 0 0 20px rgba(253, 126, 20, 0.5);
-        }   
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <!-- Logo que lleva al Inicio -->
             <a href="/" class="nav-brand">
                 <span class="logo">🏢</span>
                 <span class="logo-text">Sistema de Gestión</span>
             </a>
             
-            <!-- Botón menú hamburguesa (móvil) -->
             <button class="menu-toggle" onclick="toggleMenu()">☰</button>
             
-            <!-- ===== MENÚ DE NAVEGACIÓN CON BOTÓN INICIO ===== -->
             <div class="nav-menu" id="navMenu">
-                <!-- 🏠 BOTÓN INICIO -->
                 <a href="/" class="nav-btn btn-inicio {% if request.path == '/' %}active{% endif %}">
                     🏠 Inicio
                 </a>
-                
-                <!-- 👥 BOTÓN PROVEEDORES -->
                 <a href="/proveedores/" class="nav-btn btn-proveedores {% if '/proveedores/' in request.path %}active{% endif %}">
                     👥 Proveedores
                 </a>
-                
-                <!-- 📦 BOTÓN PRODUCTOS -->
                 <a href="/productos/" class="nav-btn btn-productos {% if '/productos/' in request.path %}active{% endif %}">
                     📦 Productos
                 </a>
-
-                <!-- 👤 BOTÓN CLIENTES -->
                 <a href="/clientes/" class="nav-btn btn-clientes {% if '/clientes/' in request.path %}active{% endif %}">
                     👤 Clientes
                 </a>
-                
-                <!-- ⚙️ BOTÓN ADMIN
-                <a href="/admin/" class="nav-btn btn-admin {% if '/admin/' in request.path %}active{% endif %}">
+                <a href="/bascula/" class="nav-btn btn-bascula {% if '/bascula/' in request.path %}active{% endif %}">
+                    ⚖️ Báscula
+                </a>
+                <!--a href="/admin/" class="nav-btn btn-admin {% if '/admin/' in request.path %}active{% endif %}">
                     ⚙️ Admin
                 </a-->
             </div>

@@ -1,0 +1,333 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Simulacion - Bascula{% endblock %}
+
+{% block contenido %}
+
+<style>
+    .sim-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+    .tab-btn {
+        padding: 15px 30px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+    }
+    .tab-btn.principal {
+        background: #6c757d;
+        color: white;
+    }
+    .tab-btn.simulacion {
+        background: #28a745;
+        color: white;
+    }
+    .tab-btn.simulacion.active {
+        background: #1e7e34;
+    }
+    .tab-btn.real {
+        background: #007bff;
+        color: white;
+    }
+    .tab-btn.real:hover {
+        background: #0056b3;
+    }
+    .info-box {
+        background: #cce5ff;
+        border: 1px solid #b8daff;
+        color: #004085;
+        padding: 15px 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    .info-box strong {
+        display: block;
+        margin-bottom: 5px;
+    }
+    .display-peso {
+        background: #1a1a2e;
+        border-radius: 16px;
+        padding: 40px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .display-peso .valor {
+        font-size: 72px;
+        font-weight: bold;
+        color: #00ff88;
+        font-family: 'Courier New', monospace;
+    }
+    .display-peso .unidad {
+        font-size: 24px;
+        color: #88ffbb;
+        margin-left: 10px;
+    }
+    .display-peso .estado {
+        font-size: 18px;
+        color: #88bbff;
+        margin-top: 15px;
+    }
+    .display-peso .estado.conectado {
+        color: #00ff88;
+    }
+    .display-peso .estado.desconectado {
+        color: #ff4444;
+    }
+    .display-peso .fecha-hora {
+        font-size: 16px;
+        color: #8899bb;
+        margin-top: 10px;
+    }
+    .controls {
+        background: #f8f9fa;
+        padding: 15px 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    .controls .btn {
+        padding: 8px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    .controls .btn-verde {
+        background: #28a745;
+        color: white;
+    }
+    .controls .btn-verde:hover {
+        background: #218838;
+    }
+    .controls .btn-rojo {
+        background: #dc3545;
+        color: white;
+    }
+    .controls .btn-rojo:hover {
+        background: #c82333;
+    }
+    .controls .estado-label {
+        font-weight: bold;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 13px;
+    }
+    .controls .estado-label.activo {
+        background: #d4edda;
+        color: #155724;
+    }
+    .controls .estado-label.inactivo {
+        background: #f8d7da;
+        color: #721c24;
+    }
+    .badge {
+        display: inline-block;
+        background: #ffc107;
+        color: #333;
+        padding: 2px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+    .auto-registro {
+        background: #d4edda;
+        padding: 10px 15px;
+        border-radius: 8px;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        margin-bottom: 10px;
+    }
+    .tabla {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-top: 20px;
+    }
+    .tabla .header {
+        background: #343a40;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .tabla .header h2 {
+        margin: 0;
+        font-size: 20px;
+    }
+    .tabla .header .acciones {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    .tabla .header .btn-limpiar {
+        background: #dc3545;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th {
+        background: #f8f9fa;
+        padding: 12px;
+        text-align: left;
+        border-bottom: 2px solid #dee2e6;
+        font-weight: 600;
+    }
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #dee2e6;
+    }
+    tr:hover {
+        background: #f8f9fa;
+    }
+    .btn-eliminar {
+        background: #dc3545;
+        color: white;
+        border: none;
+        padding: 5px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+    }
+    .btn-eliminar:hover {
+        background: #c82333;
+    }
+    .vacio {
+        text-align: center;
+        padding: 40px;
+        color: #666;
+    }
+    .contador {
+        background: #e9ecef;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 14px;
+        color: #495057;
+    }
+</style>
+
+<div class="sim-container">
+
+    <div class="tabs">
+        <!--a href="{% url 'bascula' %}" class="tab-btn principal">📋 Inicio</a-->
+        <a href="{% url 'modo_simulacion' %}" class="tab-btn simulacion active">🖥️ Simulacion</a>
+        <a href="{% url 'modo_real' %}" class="tab-btn real">🔌 Bascula Real</a>
+    </div>
+
+    <div class="info-box">
+        <strong>🔄 Simulacion Automatica</strong>
+        <p style="margin: 0; font-size: 14px;">
+            Los pesos se generan y registran automaticamente cada 2 segundos.
+            No necesitas conectar ninguna bascula fisica.
+        </p>
+    </div>
+
+    <div class="controls">
+        <div>
+            <strong>🎮 Simulador:</strong>
+            <span class="estado-label {% if simulador_activo %}activo{% else %}inactivo{% endif %}">
+                {% if simulador_activo %}✅ Activo{% else %}⛔ Inactivo{% endif %}
+            </span>
+        </div>
+
+        <form method="post" action="{% if simulador_activo %}{% url 'desconectar_simulador' %}{% else %}{% url 'conectar_simulador' %}{% endif %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn {% if simulador_activo %}btn-rojo{% else %}btn-verde{% endif %}">
+                {% if simulador_activo %}⏹️ Detener{% else %}▶️ Iniciar{% endif %}
+            </button>
+        </form>
+
+        <span class="badge">📝 Registro automatico</span>
+    </div>
+
+    {% if simulador_activo %}
+    <div class="auto-registro">
+        ✅ Simulacion activa - Generando y registrando pesos automaticamente...
+    </div>
+    {% endif %}
+
+    <div class="display-peso">
+        <div>
+            <span class="valor" id="pesoDisplay">{{ peso_actual|default:"0.000" }}</span>
+            <span class="unidad">kg</span>
+        </div>
+        <div class="estado {% if simulador_activo %}conectado{% else %}desconectado{% endif %}" id="estadoDisplay">
+            {% if simulador_activo %}
+                ✅ Generando pesos automaticamente
+            {% else %}
+                ⚠️ Simulador inactivo - Presiona Iniciar
+            {% endif %}
+        </div>
+        <div class="fecha-hora" id="fechaHoraDisplay">
+            📅 {% now "d/m/Y H:i:s" %}
+        </div>
+    </div>
+
+    <div class="tabla">
+        <div class="header">
+            <h2>📋 Registros de Pesos</h2>
+            <div class="acciones">
+                <span class="contador">📊 {{ registros|length }} registros</span>
+                <a href="{% url 'limpiar_registros' %}" class="btn-limpiar">🗑️ Limpiar</a>
+            </div>
+        </div>
+
+        {% if registros %}
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>⚖️ Peso (kg)</th>
+                    <th>📅 Fecha y Hora</th>
+                    <th>⚙️ Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for registro in registros %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><strong>{{ registro.peso }}</strong></td>
+                    <td>{{ registro.fecha_registro|date:"d/m/Y H:i:s" }}</td>
+                    <td>
+                        <a href="{% url 'eliminar_registro' registro.id %}" class="btn-eliminar">🗑️</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="vacio">
+            <p>📭 No hay registros de peso</p>
+            <p style="margin-top: 10px; font-size: 14px;">
+                💡 Inicia la simulacion para ver como se llena la tabla automaticamente
+            </p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
