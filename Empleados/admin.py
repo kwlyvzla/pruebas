@@ -2,22 +2,22 @@ from django.contrib import admin
 from .models import Empleado
 
 class EmpleadoAdmin(admin.ModelAdmin):
-    list_display = ('numero_empleado', 'nombre_completo', 'puesto', 'activo', 'fecha_contratacion')
-    search_fields = ('nombre', 'apellidos', 'numero_empleado', 'curp', 'rfc')
-    list_filter = ('activo', 'puesto', 'fecha_contratacion')
-    ordering = ('apellidos', 'nombre')
-    list_editable = ('puesto', 'activo')
-    readonly_fields = ('fecha_registro', 'fecha_actualizacion')
+    list_display = ('numero_empleado', 'nombre', 'puesto', 'departamento', 'activo', 'fecha_ingreso')
+    search_fields = ('numero_empleado', 'nombre', 'email', 'puesto', 'departamento')
+    list_filter = ('activo', 'departamento', 'fecha_ingreso')
+    ordering = ('numero_empleado',)
+    list_editable = ('puesto', 'departamento', 'activo')
+    readonly_fields = ('numero_empleado', 'fecha_registro', 'fecha_actualizacion')
     
     fieldsets = (
-        ('📋 Datos Personales', {
-            'fields': ('nombre', 'apellidos', 'curp', 'rfc')
+        ('📋 Número de Empleado', {
+            'fields': ('numero_empleado',)
         }),
-        ('📞 Contacto', {
-            'fields': ('celular', 'direccion')
+        ('👤 Datos Personales', {
+            'fields': ('nombre', 'email', 'telefono', 'direccion')
         }),
         ('💼 Datos Laborales', {
-            'fields': ('puesto', 'fecha_contratacion', 'salario', 'nss', 'numero_empleado')
+            'fields': ('puesto', 'departamento', 'fecha_ingreso', 'salario')
         }),
         ('📅 Estado', {
             'fields': ('activo', 'fecha_registro', 'fecha_actualizacion')

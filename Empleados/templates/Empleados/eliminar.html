@@ -22,6 +22,16 @@
         margin: 20px 0;
         text-align: left;
     }
+    .info .numero {
+        display: inline-block;
+        background: #007bff;
+        color: white;
+        padding: 3px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
     .info strong { display: block; font-size: 18px; color: #333; }
     .info .detalle { color: #666; margin-top: 5px; }
     .btn-eliminar {
@@ -53,12 +63,20 @@
     <p>¿Estás seguro de que deseas eliminar este empleado?</p>
     
     <div class="info">
-        <strong>{{ empleado.nombre }} {{ empleado.apellidos }}</strong>
-        <div class="detalle">📧 {{ empleado.email|default:"Sin correo" }}</div>
-        <div class="detalle">📍 {{ empleado.direccion }}</div>
-        <!--div class="detalle">📞 {{ empleado.telefono|default:"Sin teléfono" }}</div-->
-        <div class="detalle">💼 {{ empleado.get_puesto_display }}</div>
-        <div class="detalle"># {{ empleado.numero_empleado }}</div>
+        <span class="numero">{{ empleado.numero_empleado }}</span>
+        <strong>{{ empleado.nombre }}</strong>
+        {% if empleado.puesto %}
+            <div class="detalle">💼 {{ empleado.puesto }}{% if empleado.departamento %} - {{ empleado.departamento }}{% endif %}</div>
+        {% endif %}
+        {% if empleado.email %}
+            <div class="detalle">📧 {{ empleado.email }}</div>
+        {% endif %}
+        {% if empleado.telefono %}
+            <div class="detalle">📞 {{ empleado.telefono }}</div>
+        {% endif %}
+        {% if empleado.fecha_ingreso %}
+            <div class="detalle">📅 Ingreso: {{ empleado.fecha_ingreso|date:"d/m/Y" }}</div>
+        {% endif %}
     </div>
     
     <p class="advertencia">⚠️ Esta acción no se puede deshacer</p>

@@ -52,6 +52,16 @@
         flex: 1;
         min-width: 200px;
     }
+    .info .numero {
+        display: inline-block;
+        background: #007bff;
+        color: white;
+        padding: 3px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
     .info strong {
         font-size: 18px;
         color: #333;
@@ -61,25 +71,6 @@
         color: #666;
         font-size: 14px;
         margin-top: 3px;
-    }
-    .info .puesto-badge {
-        display: inline-block;
-        background: #007bff;
-        color: white;
-        padding: 2px 10px;
-        border-radius: 12px;
-        font-size: 12px;
-        margin-top: 5px;
-    }
-    .info .empleado-id {
-        display: inline-block;
-        background: #e9ecef;
-        color: #495057;
-        padding: 2px 10px;
-        border-radius: 12px;
-        font-size: 12px;
-        margin-top: 5px;
-        margin-left: 5px;
     }
     
     .acciones {
@@ -109,6 +100,9 @@
     }
     .btn-eliminar:hover { background: #c82333; }
     
+    .activo { color: #28a745; font-weight: bold; }
+    .inactivo { color: #dc3545; font-weight: bold; }
+    
     .vacio {
         text-align: center;
         color: #666;
@@ -122,7 +116,7 @@
 
 <div class="header">
     <div>
-        <h1>👤 Empleados</h1>
+        <h1>👨‍💼 Empleados</h1>
         <span class="contador">📊 {{ empleados|length }} empleados activos</span>
     </div>
     <a href="{% url 'agregar_empleado' %}" class="btn-agregar">➕ Agregar Empleado</a>
@@ -132,13 +126,24 @@
     {% for empleado in empleados %}
         <div class="card">
             <div class="info">
-                <strong>{{ empleado.nombre }} {{ empleado.apellidos }}</strong>
-                <div class="detalle">📧 {{ empleado.email|default:"Sin correo" }}</div>
-                <div class="detalle">📍 {{ empleado.direccion }}</div>
-                <!--div class="detalle">📞 {{ empleado.telefono|default:"Sin teléfono" }}{% if empleado.celular %} / {{ empleado.celular }}{% endif %}</div-->
-                <div>
-                    <span class="puesto-badge">{{ empleado.get_puesto_display }}</span>
-                    <span class="empleado-id">#{{ empleado.numero_empleado }}</span>
+                <span class="numero">{{ empleado.numero_empleado }}</span>
+                <strong>{{ empleado.nombre }}</strong>
+                {% if empleado.puesto %}
+                    <div class="detalle">💼 {{ empleado.puesto }}{% if empleado.departamento %} - {{ empleado.departamento }}{% endif %}</div>
+                {% endif %}
+                {% if empleado.email %}
+                    <div class="detalle">📧 {{ empleado.email }}</div>
+                {% endif %}
+                {% if empleado.telefono %}
+                    <div class="detalle">📞 {{ empleado.telefono }}</div>
+                {% endif %}
+                {% if empleado.fecha_ingreso %}
+                    <div class="detalle">📅 Ingreso: {{ empleado.fecha_ingreso|date:"d/m/Y" }}</div>
+                {% endif %}
+                <div class="detalle">
+                    <span class="{% if empleado.activo %}activo{% else %}inactivo{% endif %}">
+                        {% if empleado.activo %}✅ Activo{% else %}❌ Inactivo{% endif %}
+                    </span>
                 </div>
             </div>
             <div class="acciones">
