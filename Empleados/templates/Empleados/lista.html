@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Empleados - Sistema de Gestión{% endblock %}
+
+{% block contenido %}
+<style>
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    h1 { color: #333; }
+    .contador {
+        background: #e9ecef;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 14px;
+        color: #495057;
+        display: inline-block;
+        margin-top: 5px;
+    }
+    .btn-agregar {
+        background: #28a745;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        display: inline-block;
+        transition: 0.3s;
+    }
+    .btn-agregar:hover { background: #218838; }
+    
+    .card {
+        background: white;
+        padding: 15px 20px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        transition: 0.2s;
+    }
+    .card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+    
+    .info {
+        flex: 1;
+        min-width: 200px;
+    }
+    .info strong {
+        font-size: 18px;
+        color: #333;
+        display: block;
+    }
+    .info .detalle {
+        color: #666;
+        font-size: 14px;
+        margin-top: 3px;
+    }
+    .info .puesto-badge {
+        display: inline-block;
+        background: #007bff;
+        color: white;
+        padding: 2px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+    .info .empleado-id {
+        display: inline-block;
+        background: #e9ecef;
+        color: #495057;
+        padding: 2px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        margin-top: 5px;
+        margin-left: 5px;
+    }
+    
+    .acciones {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .btn-editar {
+        background: #ffc107;
+        color: #333;
+        padding: 8px 16px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+    .btn-editar:hover { background: #e0a800; }
+    
+    .btn-eliminar {
+        background: #dc3545;
+        color: white;
+        padding: 8px 16px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+    .btn-eliminar:hover { background: #c82333; }
+    
+    .vacio {
+        text-align: center;
+        color: #666;
+        padding: 40px;
+        background: white;
+        border-radius: 8px;
+    }
+    .vacio a { color: #28a745; text-decoration: none; }
+    .vacio a:hover { text-decoration: underline; }
+</style>
+
+<div class="header">
+    <div>
+        <h1>👤 Empleados</h1>
+        <span class="contador">📊 {{ empleados|length }} empleados activos</span>
+    </div>
+    <a href="{% url 'agregar_empleado' %}" class="btn-agregar">➕ Agregar Empleado</a>
+</div>
+
+{% if empleados %}
+    {% for empleado in empleados %}
+        <div class="card">
+            <div class="info">
+                <strong>{{ empleado.nombre }} {{ empleado.apellidos }}</strong>
+                <div class="detalle">📧 {{ empleado.email|default:"Sin correo" }}</div>
+                <div class="detalle">📍 {{ empleado.direccion }}</div>
+                <!--div class="detalle">📞 {{ empleado.telefono|default:"Sin teléfono" }}{% if empleado.celular %} / {{ empleado.celular }}{% endif %}</div-->
+                <div>
+                    <span class="puesto-badge">{{ empleado.get_puesto_display }}</span>
+                    <span class="empleado-id">#{{ empleado.numero_empleado }}</span>
+                </div>
+            </div>
+            <div class="acciones">
+                <a href="{% url 'editar_empleado' empleado.id %}" class="btn-editar">✏️ Editar</a>
+                <a href="{% url 'eliminar_empleado' empleado.id %}" class="btn-eliminar">🗑️ Eliminar</a>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="vacio">
+        <p>No hay empleados registrados</p>
+        <p style="margin-top: 10px;">
+            <a href="{% url 'agregar_empleado' %}">➕ Agregar el primer empleado</a>
+        </p>
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Eliminar Empleado - Sistema de Gestión{% endblock %}
+
+{% block contenido %}
+<style>
+    .card {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        max-width: 500px;
+        margin: auto;
+        text-align: center;
+    }
+    .icono { font-size: 60px; margin-bottom: 20px; }
+    h1 { color: #dc3545; margin-bottom: 15px; }
+    .info {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        margin: 20px 0;
+        text-align: left;
+    }
+    .info strong { display: block; font-size: 18px; color: #333; }
+    .info .detalle { color: #666; margin-top: 5px; }
+    .btn-eliminar {
+        background: #dc3545;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .btn-eliminar:hover { background: #c82333; }
+    .btn-cancelar {
+        background: #6c757d;
+        color: white;
+        padding: 12px 30px;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-left: 10px;
+    }
+    .btn-cancelar:hover { background: #5a6268; }
+    .buttons { margin-top: 20px; }
+    .advertencia { color: #dc3545; margin: 15px 0; font-weight: bold; }
+</style>
+
+<div class="card">
+    <div class="icono">⚠️</div>
+    <h1>Eliminar Empleado</h1>
+    <p>¿Estás seguro de que deseas eliminar este empleado?</p>
+    
+    <div class="info">
+        <strong>{{ empleado.nombre }} {{ empleado.apellidos }}</strong>
+        <div class="detalle">📧 {{ empleado.email|default:"Sin correo" }}</div>
+        <div class="detalle">📍 {{ empleado.direccion }}</div>
+        <!--div class="detalle">📞 {{ empleado.telefono|default:"Sin teléfono" }}</div-->
+        <div class="detalle">💼 {{ empleado.get_puesto_display }}</div>
+        <div class="detalle"># {{ empleado.numero_empleado }}</div>
+    </div>
+    
+    <p class="advertencia">⚠️ Esta acción no se puede deshacer</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="buttons">
+            <button type="submit" class="btn-eliminar">Sí, eliminar</button>
+            <a href="{% url 'lista_empleados' %}" class="btn-cancelar">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
