@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Asistencias{% endblock %}
+
+{% block contenido %}
+<style>
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+    h1 { color: #0f2b5c; }
+    .btn-add { background: #2563eb; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; }
+    table { width: 100%; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,50,120,0.1); border-collapse: collapse; }
+    th { background: #1e4a9e; color: white; padding: 12px; text-align: left; }
+    td { padding: 12px; border-bottom: 1px solid #e2e8f0; }
+    tr:hover { background: #f0f6ff; }
+    .btn-edit { background: #ffc107; color: #333; padding: 5px 12px; border-radius: 5px; text-decoration: none; font-size: 13px; }
+    .btn-del { background: #dc3545; color: white; padding: 5px 12px; border-radius: 5px; text-decoration: none; font-size: 13px; margin-left: 5px; }
+    .vacio { text-align: center; padding: 40px; background: white; border-radius: 10px; color: #666; }
+    .estado { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; color: white; }
+    .estado-PRESENTE { background: #10b981; }
+    .estado-AUSENTE { background: #ef4444; }
+    .estado-RETARDO { background: #f59e0b; }
+    .estado-PERMISO { background: #8b5cf6; }
+</style>
+<div class="header">
+    <h1>🕒 Registros de Asistencia</h1>
+    <a href="{% url 'agregar_asistencia' %}" class="btn-add">➕ Registrar Asistencia</a>
+</div>
+
+{% if asistencias %}
+<table>
+    <thead>
+        <tr>
+            <th>Empleado</th>
+            <th>Fecha</th>
+            <th>Entrada</th>
+            <th>Salida</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for a in asistencias %}
+        <tr>
+            <td>
+                <strong>{{ a.empleado.numero_empleado }}</strong> - {{ a.empleado.nombre_completo }}<br>
+                <small style="color: #666;">{{ a.empleado.departamento }}</small>
+            </td>
+            <td>{{ a.fecha|date:"d/m/Y" }}</td>
+            <td>{{ a.hora_entrada|time:"H:i"|default:"--" }}</td>
+            <td>{{ a.hora_salida|time:"H:i"|default:"--" }}</td>
+            <td>
+                <span class="estado estado-{{ a.estado }}">{{ a.get_estado_display }}</span>
+            </td>
+            <td>
+                <a href="{% url 'editar_asistencia' a.id %}" class="btn-edit">✏️ Editar</a>
+                <a href="{% url 'eliminar_asistencia' a.id %}" class="btn-del">🗑️</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="vacio">No hay registros de asistencia. <a href="{% url 'agregar_asistencia' %}">Registra el primero</a></div>
+{% endif %}
+{% endblock %}

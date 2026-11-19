@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Kiosco de Checada{% endblock %}
+
+{% block contenido %}
+{% csrf_token %}
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0f172a; font-family: 'Segoe UI', Arial, sans-serif; min-height: 100vh; }
+    .kiosco-header { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white; padding: 20px; text-align: center; }
+    .kiosco-header h1 { font-size: 32px; margin-bottom: 8px; }
+    .kiosco-header p { font-size: 16px; opacity: 0.9; }
+    .fecha-hora { font-size: 20px; font-weight: bold; margin-top: 10px; color: #fbbf24; }
+    .kiosco-container { max-width: 1200px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
+    .empleado-card { background: white; border-radius: 16px; padding: 25px; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,0.15); transition: transform 0.2s; }
+    .empleado-card:hover { transform: translateY(-4px); }
+    .empleado-numero { font-size: 14px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .empleado-nombre { font-size: 22px; font-weight: 700; color: #1e293b; margin-bottom: 12px; }
+    .empleado-depto { font-size: 13px; color: #94a3b8; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .estado-badge { display: inline-block; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; }
+    .estado-sin-registro { background: #f1f5f9; color: #64748b; border: 2px solid #cbd5e1; }
+    .estado-entrada { background: #dcfce7; color: #166534; border: 2px solid #4ade80; }
+    .estado-completo { background: #dbeafe; color: #1d4ed8; border: 2px solid #60a5fa; }
+    .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .btn-checar { padding: 18px; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px; position: relative; z-index: 10; }
+    .btn-checar:active { transform: scale(0.95); }
+    .btn-checar:disabled { cursor: not-allowed; opacity: 0.6; }
+    .btn-entrada { background: #10b981; color: white; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4); }
+    .btn-entrada:hover { background: #059669; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6); }
+    .btn-entrada:disabled { background: #94a3b8; box-shadow: none; cursor: not-allowed; }
+    .btn-salida { background: #ef4444; color: white; box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4); }
+    .btn-salida:hover { background: #dc2626; box-shadow: 0 6px 20px rgba(239, 68, 68, 0.6); }
+    .btn-salida:disabled { background: #94a3b8; box-shadow: none; cursor: not-allowed; }
+    .btn-auto { grid-column: span 2; background: #3b82f6; color: white; box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4); }
+    .btn-auto:hover { background: #2563eb; box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6); }
+    .btn-auto:disabled { background: #94a3b8; box-shadow: none; cursor: not-allowed; }
+    .mensaje-flotante { position: fixed; top: 90px; left: 50%; transform: translateX(-50%); padding: 16px 32px; border-radius: 12px; font-size: 16px; font-weight: 600; color: white; z-index: 1000; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .mensaje-exito { background: #10b981; }
+    .mensaje-error { background: #ef4444; }
+    .mensaje-info { background: #f59e0b; }
+    .volver-menu { display: block; text-align: center; margin-top: 40px; color: #64748b; text-decoration: none; font-size: 14px; }
+    .volver-menu:hover { color: #2563eb; text-decoration: underline; }
+    .no-empleados { text-align: center; padding: 60px 20px; background: white; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+    .no-empleados h2 { color: #1e293b; margin-bottom: 12px; }
+    .no-empleados p { color: #64748b; }
+</style>
+
+<div class="kiosco-header">
+    <h1>🕒 Kiosco de Checada</h1>
+    <p>Registro de Entrada y Salida</p>
+    <div class="fecha-hora" id="fecha-hora"></div>
+</div>
+
+{% if estado_empleados %}
+<div class="kiosco-container">
+    {% for item in estado_empleados %}
+    {% with emp=item.empleado registro=item.registro estado=item.estado %}
+    <div class="empleado-card" id="card-{{ emp.id }}">
+        <div class="empleado-numero">Empleado {{ emp.numero_empleado }}</div>
+        <div class="empleado-nombre">{{ emp.nombre_completo }}</div>
+        <div class="empleado-depto">{{ emp.departamento }}</div>
+
+        {% if estado == 'sin_registro' %}
+        <div class="estado-badge estado-sin-registro">Sin checada hoy</div>
+        {% elif estado == 'entrada_solo' %}
+        <div class="estado-badge estado-entrada">Entrada: {{ item.hora_entrada_str }}</div>
+        {% elif estado == 'completo' %}
+        <div class="estado-badge estado-completo">Completo: {{ item.hora_entrada_str }} - {{ item.hora_salida_str }}</div>
+        {% endif %}
+
+        <div class="btn-grid">
+            {% if estado == 'sin_registro' or estado == 'completo' %}
+            <button class="btn-checar btn-entrada" onclick="checarEntrada({{ emp.id }})" {% if estado == 'completo' %}disabled{% endif %}>
+                🟢 Entrada
+            </button>
+            <button class="btn-checar btn-salida" onclick="checarSalida({{ emp.id }})" {% if estado == 'sin_registro' or estado == 'completo' %}disabled{% endif %}>
+                🔴 Salida
+            </button>
+            {% elif estado == 'entrada_solo' %}
+            <button class="btn-checar btn-entrada" disabled>
+                🟢 Entrada (ya checada)
+            </button>
+            <button class="btn-checar btn-salida" onclick="checarSalida({{ emp.id }})">
+                🔴 Salida
+            </button>
+            {% endif %}
+        </div>
+        <button class="btn-checar btn-auto" onclick="checarAuto({{ emp.id }})" {% if estado == 'completo' %}disabled{% endif %}>
+            ⚡ Checar Automático
+        </button>
+    </div>
+    {% endwith %}
+    {% endfor %}
+</div>
+{% else %}
+<div class="no-empleados">
+    <h2>⚠️ No hay empleados activos</h2>
+    <p>Registra empleados en el módulo de Empleados antes de usar el kiosco.</p>
+</div>
+{% endif %}
+
+<a href="{% url 'chat_view' %}" class="volver-menu">← Volver al Chat-Bot</a>
+
+<div id="mensaje-flotante" class="mensaje-flotante"></div>
+
+<script>
+    function actualizarFechaHora() {
+        const ahora = new Date();
+        const opcionesFecha = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const opcionesHora = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        document.getElementById('fecha-hora').textContent =
+            ahora.toLocaleDateString('es-MX', opcionesFecha) + ' ' +
+            ahora.toLocaleTimeString('es-MX', opcionesHora);
+    }
+    setInterval(actualizarFechaHora, 1000);
+    actualizarFechaHora();
+
+    function mostrarMensaje(texto, tipo) {
+        const div = document.getElementById('mensaje-flotante');
+        div.textContent = texto;
+        div.className = 'mensaje-flotante mensaje-' + tipo;
+        div.style.display = 'block';
+        setTimeout(() => { div.style.display = 'none'; }, 4000);
+    }
+
+    // Obtener token CSRF de Django para peticiones POST
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    async function checarAuto(empleadoId) {
+        console.log('checarAuto llamado con:', empleadoId);
+        try {
+            const response = await fetch('/chatbot/kiosco/api/checar/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ empleado_id: empleadoId, tipo: 'AUTO' })
+            });
+            const data = await response.json();
+            console.log('Respuesta:', data);
+            if (data.status === 'ok') {
+                mostrarMensaje(data.mensaje, 'exito');
+                setTimeout(() => location.reload(), 1500);
+            } else if (data.status === 'info') {
+                mostrarMensaje(data.mensaje, 'info');
+            } else {
+                mostrarMensaje(data.mensaje || 'Error', 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarMensaje('Error de conexión', 'error');
+        }
+    }
+
+    async function checarEntrada(empleadoId) {
+        console.log('checarEntrada llamado con:', empleadoId);
+        try {
+            const response = await fetch('/chatbot/kiosco/api/checar/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ empleado_id: empleadoId, tipo: 'ENTRADA' })
+            });
+            const data = await response.json();
+            console.log('Respuesta:', data);
+            if (data.status === 'ok') {
+                mostrarMensaje(data.mensaje, 'exito');
+                setTimeout(() => location.reload(), 1500);
+            } else if (data.status === 'info') {
+                mostrarMensaje(data.mensaje, 'info');
+            } else {
+                mostrarMensaje(data.mensaje || 'Error', 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarMensaje('Error de conexión', 'error');
+        }
+    }
+
+    async function checarSalida(empleadoId) {
+        console.log('checarSalida llamado con:', empleadoId);
+        try {
+            const response = await fetch('/chatbot/kiosco/api/checar/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ empleado_id: empleadoId, tipo: 'SALIDA' })
+            });
+            const data = await response.json();
+            console.log('Respuesta:', data);
+            if (data.status === 'ok') {
+                mostrarMensaje(data.mensaje, 'exito');
+                setTimeout(() => location.reload(), 1500);
+            } else if (data.status === 'info') {
+                mostrarMensaje(data.mensaje, 'info');
+            } else {
+                mostrarMensaje(data.mensaje || 'Error', 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarMensaje('Error de conexión', 'error');
+        }
+    }
+</script>
+{% endblock %}

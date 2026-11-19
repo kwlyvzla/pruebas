@@ -1,163 +1,46 @@
 {% extends 'base.html' %}
-
-{% block titulo %}Empleados - Sistema de Gestión{% endblock %}
-
+{% block titulo %}Empleados{% endblock %}
 {% block contenido %}
 <style>
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-    h1 { color: #333; }
-    .contador {
-        background: #e9ecef;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 14px;
-        color: #495057;
-        display: inline-block;
-        margin-top: 5px;
-    }
-    .btn-agregar {
-        background: #28a745;
-        color: white;
-        padding: 10px 20px;
-        text-decoration: none;
-        border-radius: 5px;
-        display: inline-block;
-        transition: 0.3s;
-    }
-    .btn-agregar:hover { background: #218838; }
-    
-    .card {
-        background: white;
-        padding: 15px 20px;
-        margin-bottom: 10px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 10px;
-        transition: 0.2s;
-    }
-    .card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
-    
-    .info {
-        flex: 1;
-        min-width: 200px;
-    }
-    .info .numero {
-        display: inline-block;
-        background: #007bff;
-        color: white;
-        padding: 3px 12px;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-    .info strong {
-        font-size: 18px;
-        color: #333;
-        display: block;
-    }
-    .info .detalle {
-        color: #666;
-        font-size: 14px;
-        margin-top: 3px;
-    }
-    
-    .acciones {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-    }
-    .btn-editar {
-        background: #ffc107;
-        color: #333;
-        padding: 8px 16px;
-        text-decoration: none;
-        border-radius: 5px;
-        font-size: 14px;
-        transition: 0.3s;
-    }
-    .btn-editar:hover { background: #e0a800; }
-    
-    .btn-eliminar {
-        background: #dc3545;
-        color: white;
-        padding: 8px 16px;
-        text-decoration: none;
-        border-radius: 5px;
-        font-size: 14px;
-        transition: 0.3s;
-    }
-    .btn-eliminar:hover { background: #c82333; }
-    
-    .activo { color: #28a745; font-weight: bold; }
-    .inactivo { color: #dc3545; font-weight: bold; }
-    
-    .vacio {
-        text-align: center;
-        color: #666;
-        padding: 40px;
-        background: white;
-        border-radius: 8px;
-    }
-    .vacio a { color: #28a745; text-decoration: none; }
-    .vacio a:hover { text-decoration: underline; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+    h1 { color: #0f2b5c; }
+    .btn-add { background: #2563eb; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; }
+    .card { background: white; padding: 15px 20px; margin-bottom: 10px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,50,120,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+    .info { display: flex; align-items: center; gap: 15px; flex: 1; min-width: 250px; }
+    .foto { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 3px solid #2563eb; }
+    .foto-placeholder { width: 60px; height: 60px; border-radius: 50%; background: #e0edff; display: flex; align-items: center; justify-content: center; font-size: 24px; border: 3px solid #93c5fd; }
+    .info strong { font-size: 16px; color: #0f2b5c; display: block; }
+    .numero { display: inline-block; background: #2563eb; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-bottom: 3px; }
+    .detalle { color: #666; font-size: 13px; margin-top: 2px; }
+    .btn-edit { background: #ffc107; color: #333; padding: 7px 14px; border-radius: 6px; text-decoration: none; font-size: 13px; }
+    .btn-del { background: #dc3545; color: white; padding: 7px 14px; border-radius: 6px; text-decoration: none; font-size: 13px; margin-left: 6px; }
+    .vacio { text-align: center; padding: 40px; background: white; border-radius: 10px; color: #666; }
 </style>
-
 <div class="header">
-    <div>
-        <h1>👨‍💼 Empleados</h1>
-        <span class="contador">📊 {{ empleados|length }} empleados activos</span>
-    </div>
-    <a href="{% url 'agregar_empleado' %}" class="btn-agregar">➕ Agregar Empleado</a>
+    <h1>👔 Empleados</h1>
+    <a href="{% url 'agregar_empleado' %}" class="btn-add">➕ Agregar Empleado</a>
 </div>
-
-{% if empleados %}
-    {% for empleado in empleados %}
-        <div class="card">
-            <div class="info">
-                <span class="numero">{{ empleado.numero_empleado }}</span>
-                <strong>{{ empleado.nombre }}</strong>
-                {% if empleado.puesto %}
-                    <div class="detalle">💼 {{ empleado.puesto }}{% if empleado.departamento %} - {{ empleado.departamento }}{% endif %}</div>
-                {% endif %}
-                {% if empleado.email %}
-                    <div class="detalle">📧 {{ empleado.email }}</div>
-                {% endif %}
-                {% if empleado.telefono %}
-                    <div class="detalle">📞 {{ empleado.telefono }}</div>
-                {% endif %}
-                {% if empleado.fecha_ingreso %}
-                    <div class="detalle">📅 Ingreso: {{ empleado.fecha_ingreso|date:"d/m/Y" }}</div>
-                {% endif %}
-                <div class="detalle">
-                    <span class="{% if empleado.activo %}activo{% else %}inactivo{% endif %}">
-                        {% if empleado.activo %}✅ Activo{% else %}❌ Inactivo{% endif %}
-                    </span>
-                </div>
-            </div>
-            <div class="acciones">
-                <a href="{% url 'editar_empleado' empleado.id %}" class="btn-editar">✏️ Editar</a>
-                <a href="{% url 'eliminar_empleado' empleado.id %}" class="btn-eliminar">🗑️ Eliminar</a>
+{% for e in empleados %}
+    <div class="card">
+        <div class="info">
+            {% if e.foto %}
+                <img src="{{ e.foto.url }}" class="foto">
+            {% else %}
+                <div class="foto-placeholder">👤</div>
+            {% endif %}
+            <div>
+                <span class="numero">{{ e.numero_empleado }}</span>
+                <strong>{{ e.nombre_completo }}</strong>
+                <div class="detalle">📞 {{ e.telefono }} | 📧 {{ e.email }}</div>
+                <div class="detalle">💼 {{ e.get_puesto_display }} | {{ e.get_departamento_display }}</div>
             </div>
         </div>
-    {% endfor %}
-{% else %}
-    <div class="vacio">
-        <p>No hay empleados registrados</p>
-        <p style="margin-top: 10px;">
-            <a href="{% url 'agregar_empleado' %}">➕ Agregar el primer empleado</a>
-        </p>
+        <div>
+            <a href="{% url 'editar_empleado' e.id %}" class="btn-edit">✏️ Editar</a>
+            <a href="{% url 'eliminar_empleado' e.id %}" class="btn-del">🗑️</a>
+        </div>
     </div>
-{% endif %}
+{% empty %}
+    <div class="vacio">No hay empleados. <a href="{% url 'agregar_empleado' %}">Agrega el primero</a></div>
+{% endfor %}
 {% endblock %}
