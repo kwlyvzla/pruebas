@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block titulo %}Eliminar Producto{% endblock %}
+{% block contenido %}
+<style>
+    .card { background: white; padding: 30px; border-radius: 12px; max-width: 500px; margin: auto; text-align: center; box-shadow: 0 2px 8px rgba(0,50,120,0.1); }
+    .icono { font-size: 60px; margin-bottom: 20px; }
+    h1 { color: #dc3545; margin-bottom: 15px; }
+    .info { background: #f1f5f9; padding: 15px; border-radius: 8px; margin: 20px 0; }
+    .btn-del { background: #dc3545; color: white; padding: 12px 30px; border: none; border-radius: 8px; cursor: pointer; }
+    .btn-cancel { background: #64748b; color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; margin-left: 10px; }
+</style>
+<div class="card">
+    <div class="icono">⚠️</div>
+    <h1>Eliminar Producto</h1>
+    <p>¿Eliminar <strong>{{ producto.nombre }}</strong>?</p>
+    <div class="info">💰 Precio: ${{ producto.precio }}<br>📦 Stock: {{ producto.stock }}</div>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn-del">Sí, eliminar</button>
+        <a href="{% url 'lista_productos' %}" class="btn-cancel">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

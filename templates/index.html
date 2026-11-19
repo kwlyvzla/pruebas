@@ -1,160 +1,73 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Inicio - Sistema de Gestión{% endblock %}
+{% block titulo %}Inicio - ProyectoPFD{% endblock %}
 
 {% block contenido %}
-<style>
-    .welcome {
-        text-align: center;
-        padding: 40px 20px;
-    }
-    .welcome h1 {
-        font-size: 36px;
-        color: #1a1a2e;
-        margin-bottom: 10px;
-    }
-    .welcome p {
-        color: #666;
-        font-size: 18px;
-        margin-bottom: 40px;
-    }
-    
-    .grid-menu {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 30px;
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-    
-    .card-menu {
-        background: white;
-        padding: 40px 30px;
-        border-radius: 16px;
-        text-align: center;
-        text-decoration: none;
-        color: #333;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        transition: all 0.3s ease;
-        border: 3px solid transparent;
-    }
-    
-    .card-menu:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-    }
-    
-    .card-menu .icono {
-        font-size: 64px;
-        display: block;
-        margin-bottom: 15px;
-    }
-    
-    .card-menu h2 {
-        font-size: 24px;
-        margin-bottom: 10px;
-        color: #1a1a2e;
-    }
-    
-    .card-menu p {
-        color: #666;
-        font-size: 15px;
-        margin: 0;
-    }
-    
-    .card-menu.proveedores {
-        border-color: #28a745;
-    }
-    .card-menu.proveedores:hover {
-        background: #f0fff4;
-    }
-    
-    .card-menu.productos {
-        border-color: #007bff;
-    }
-    .card-menu.productos:hover {
-        background: #f0f8ff;
-    }
-    
-    .card-menu.clientes {
-        border-color: #fd7e14;
-    }
-    .card-menu.clientes:hover {
-        background: #fff5f0;
-    }
-    
-    .card-menu.bascula {
-    border-color: #17a2b8;
-    }
+<div style="max-width: 900px; margin: 40px auto; text-align: center;">
+    <h1 style="color: #0f2b5c; margin-bottom: 16px;">🏢 Bienvenido al Sistema de Gestión</h1>
+    <p style="color: #4a5568; font-size: 18px; margin-bottom: 40px;">
+        Proyecto PFD - Módulos de administración empresarial
+    </p>
 
-    .card-menu.bascula:hover {
-        background: #f0f8ff;
-    }
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; justify-content: center;">
+        <a href="/proveedores/" style="text-decoration: none; color: inherit;">
+            <div style="background: white; border: 2px solid #1e4a9e; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.3s ease;">
+                <div style="font-size: 32px; margin-bottom: 12px;">👥</div>
+                <div style="font-weight: bold; font-size: 18px; color: #0f2b5c;">Proveedores</div>
+                <div style="font-size: 14px; color: #666; margin-top: 8px;">Gestión de proveedores</div>
+            </div>
+        </a>
+        <a href="/productos/" style="text-decoration: none; color: inherit;">
+            <div style="background: white; border: 2px solid #3b82f6; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.3s ease;">
+                <div style="font-size: 32px; margin-bottom: 12px;">📦</div>
+                <div style="font-weight: bold; font-size: 18px; color: #0f2b5c;">Productos</div>
+                <div style="font-size: 14px; color: #666; margin-top: 8px;">Catálogo de productos</div>
+            </div>
+        </a>
+        <a href="/clientes/" style="text-decoration: none; color: inherit;">
+            <div style="background: white; border: 2px solid #0ea5e9; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.3s ease;">
+                <div style="font-size: 32px; margin-bottom: 12px;">👤</div>
+                <div style="font-weight: bold; font-size: 18px; color: #0f2b5c;">Clientes</div>
+                <div style="font-size: 14px; color: #666; margin-top: 8px;">Gestión de clientes</div>
+            </div>
+        </a>
+        <a href="/empleados/" style="text-decoration: none; color: inherit;">
+            <div style="background: white; border: 2px solid #6366f1; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.3s ease;">
+                <div style="font-size: 32px; margin-bottom: 12px;">👔</div>
+                <div style="font-weight: bold; font-size: 18px; color: #0f2b5c;">Empleados</div>
+                <div style="font-size: 14px; color: #666; margin-top: 8px;">Gestión de personal</div>
+            </div>
+        </a>
+        <a href="/bascula/" style="text-decoration: none; color: inherit;">
+            <div style="background: white; border: 2px solid #0891b2; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.3s ease;">
+                <div style="font-size: 32px; margin-bottom: 12px;">⚖️</div>
+                <div style="font-weight: bold; font-size: 18px; color: #0f2b5c;">Báscula</div>
+                <div style="font-size: 14px; color: #666; margin-top: 8px;">Registro de pesaje</div>
+            </div>
+        </a>
+        <a href="/chatbot/" style="text-decoration: none; color: inherit;">
+            <div style="background: white; border: 2px solid #0284c7; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.3s ease;">
+                <div style="font-size: 32px; margin-bottom: 12px;">💬</div>
+                <div style="font-weight: bold; font-size: 18px; color: #0f2b5c;">Chat-Bot</div>
+                <div style="font-size: 14px; color: #666; margin-top: 8px;">Asistente virtual</div>
+            </div>
+        </a>
+        <a href="/admin/" style="text-decoration: none; color: inherit;">
+            <div style="background: white; border: 2px solid #475569; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.3s ease;">
+                <div style="font-size: 32px; margin-bottom: 12px;">⚙️</div>
+                <div style="font-weight: bold; font-size: 18px; color: #0f2b5c;">Administración</div>
+                <div style="font-size: 14px; color: #666; margin-top: 8px;">Panel de Django Admin</div>
+            </div>
+        </a>
+    </div>
 
-    .card-menu.admin {
-        border-color: #6c757d;
-    }
-
-    .card-menu.admin:hover {
-        background: #f8f9fa;
-    }
-    
-    .badge {
-        display: inline-block;
-        background: #e9ecef;
-        padding: 4px 12px;
-        border-radius: 12px;
-        font-size: 12px;
-        color: #666;
-        margin-top: 10px;
-    }
-    
-    @media (max-width: 600px) {
-        .welcome h1 { font-size: 28px; }
-        .grid-menu { grid-template-columns: 1fr; }
-    }
-</style>
-
-<div class="welcome">
-    <h1>🏢 Sistema de Gestión</h1>
-    <p>Selecciona una opción para comenzar</p>
-</div>
-
-<div class="grid-menu">
-    <a href="/proveedores/" class="card-menu proveedores">
-        <span class="icono">👥</span>
-        <h2>Proveedores</h2>
-        <p>Gestiona tus proveedores</p>
-        <span class="badge">CRUD completo</span>
-    </a>
-    
-    <a href="/productos/" class="card-menu productos">
-        <span class="icono">📦</span>
-        <h2>Productos</h2>
-        <p>Gestiona tus productos</p>
-        <span class="badge">CRUD completo</span>
-    </a>
-    
-    <a href="/clientes/" class="card-menu clientes">
-        <span class="icono">👤</span>
-        <h2>Clientes</h2>
-        <p>Gestiona tus clientes</p>
-        <span class="badge">CRUD completo</span>
-    </a>
-    
-   <a href="/bascula/" class="card-menu bascula">
-        <span class="icono">⚖️</span>
-        <h2>Báscula</h2>
-        <p>Registro de pesos en tiempo real</p>
-        <span class="badge">USB / Tiempo real</span>
-    </a>
-    
-    <!--a href="/admin/" class="card-menu admin">
-        <span class="icono">⚙️</span>
-        <h2>Administración</h2>
-        <p>Panel de administración</p>
-        <span class="badge">Requiere login</span>
-    </a-->
+    <div style="margin-top: 40px; padding: 20px; background: #f0f7ff; border-radius: 12px; border-left: 4px solid #2563eb; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto;">
+        <p style="color: #0f2b5c; font-weight: bold; margin: 0;">ℹ️ Información del sistema</p>
+        <ul style="color: #4a5568; margin: 10px 0 0 20px; padding: 0;">
+            <li><strong>Base de datos:</strong> SQLite (desarrollo local)</li>
+            <li><strong>Framework:</strong> Django 6.0.7</li>
+            <li><strong>Módulos:</strong> 6 apps integradas</li>
+        </ul>
+    </div>
 </div>
 {% endblock %}

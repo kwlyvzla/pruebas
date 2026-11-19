@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block titulo %}Editar Producto{% endblock %}
+{% block contenido %}
+<style>
+    .form-container { background: white; padding: 30px; border-radius: 12px; max-width: 600px; margin: 0 auto; box-shadow: 0 2px 8px rgba(0,50,120,0.1); }
+    h1 { color: #0f2b5c; margin-bottom: 20px; border-bottom: 2px solid #f59e0b; padding-bottom: 10px; }
+    .form-group { margin-bottom: 18px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; color: #334155; }
+    input, select, textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 15px; }
+    .btn-save { background: #f59e0b; color: #333; padding: 12px 30px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
+    .btn-cancel { background: #64748b; color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; margin-left: 10px; display: inline-block; }
+</style>
+<div class="form-container">
+    <h1>✏️ Editar Producto</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group"><label>Nombre *</label><input type="text" name="nombre" value="{{ producto.nombre }}" required></div>
+        <div class="form-group"><label>Descripción</label><textarea name="descripcion">{{ producto.descripcion }}</textarea></div>
+        <div class="form-group"><label>Precio *</label><input type="number" name="precio" step="0.01" value="{{ producto.precio }}" required></div>
+        <div class="form-group"><label>Stock</label><input type="number" name="stock" value="{{ producto.stock }}"></div>
+        <div class="form-group">
+            <label>Proveedor</label>
+            <select name="proveedor">
+                <option value="">Sin proveedor</option>
+                {% for prov in proveedores %}
+                <option value="{{ prov.id }}" {% if producto.proveedor_id == prov.id %}selected{% endif %}>{{ prov.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group"><label><input type="checkbox" name="activo" {% if producto.activo %}checked{% endif %}> Activo</label></div>
+        <button type="submit" class="btn-save">💾 Actualizar</button>
+        <a href="{% url 'lista_productos' %}" class="btn-cancel">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

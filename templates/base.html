@@ -3,273 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block titulo %}Sistema de Gestión{% endblock %}</title>
+    <title>{% block titulo %}ProyectoPFD{% endblock %}</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: #f0f2f5;
-            min-height: 100vh;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #eef4fb; min-height: 100vh; }
         .navbar {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background: linear-gradient(135deg, #0f2b5c, #1e4a9e);
             padding: 0 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 30, 80, 0.3);
+            position: sticky; top: 0; z-index: 1000;
         }
-        
         .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            max-width: 1300px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
             height: 70px;
         }
-        
         .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
+            display: flex; align-items: center; gap: 12px;
+            text-decoration: none; color: white;
+            font-size: 22px; font-weight: bold;
         }
-        
-        .nav-brand .logo {
-            font-size: 30px;
-        }
-        
-        .nav-brand:hover {
-            color: #ffd700;
-        }
-        
-        .nav-menu {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
+        .nav-brand:hover { color: #a8c8ff; }
+        .nav-menu { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
         .nav-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
+            padding: 10px 16px; border: none; border-radius: 8px;
+            font-size: 13px; font-weight: 600; text-decoration: none;
+            display: flex; align-items: center; gap: 6px;
+            transition: all 0.3s ease; color: white;
         }
-        
-        .nav-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-        
-        .btn-inicio {
-            background: #17a2b8;
-            color: white;
-        }
-        .btn-inicio:hover {
-            background: #138496;
-        }
-        .btn-inicio.active {
-            background: #0f7a8a;
-            box-shadow: 0 0 20px rgba(23, 162, 184, 0.5);
-        }
-        
-        .btn-proveedores {
-            background: #28a745;
-            color: white;
-        }
-        .btn-proveedores:hover {
-            background: #218838;
-        }
-        .btn-proveedores.active {
-            background: #1e7e34;
-            box-shadow: 0 0 20px rgba(40, 167, 69, 0.5);
-        }
-        
-        .btn-productos {
-            background: #007bff;
-            color: white;
-        }
-        .btn-productos:hover {
-            background: #0056b3;
-        }
-        .btn-productos.active {
-            background: #004085;
-            box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
-        }
-        
-        .btn-clientes {
-            background: #fd7e14;
-            color: white;
-        }
-        .btn-clientes:hover {
-            background: #e06b0a;
-        }
-        .btn-clientes.active {
-            background: #c45a08;
-            box-shadow: 0 0 20px rgba(253, 126, 20, 0.5);
-        }
-        
-        .btn-bascula {
-            background: #17a2b8;
-            color: white;
-        }
-        .btn-bascula:hover {
-            background: #138496;
-        }
-        .btn-bascula.active {
-            background: #0f7a8a;
-            box-shadow: 0 0 20px rgba(23, 162, 184, 0.5);
-        }
-        
-        .btn-admin {
-            background: #6c757d;
-            color: white;
-            padding: 8px 16px;
-            font-size: 13px;
-        }
-        .btn-admin:hover {
-            background: #5a6268;
-        }
-        .btn-admin.active {
-            background: #4a5259;
-            box-shadow: 0 0 20px rgba(108, 117, 125, 0.5);
-        }
-        
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 28px;
-            cursor: pointer;
-            padding: 5px;
-        }
-        
-        .menu-toggle:hover {
-            color: #ffd700;
-        }
-        
-        .main-content {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-        
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-            
-            .nav-menu {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                right: 0;
-                background: #1a1a2e;
-                padding: 20px;
-                gap: 12px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            }
-            
-            .nav-menu.open {
-                display: flex;
-            }
-            
-            .nav-btn {
-                width: 100%;
-                justify-content: center;
-                padding: 12px;
-            }
-            
-            .nav-brand {
-                font-size: 20px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .nav-brand .logo-text {
-                display: none;
-            }
+        .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .btn-inicio { background: #2563eb; }
+        .btn-proveedores { background: #1e4a9e; }
+        .btn-productos { background: #3b82f6; }
+        .btn-clientes { background: #0ea5e9; }
+        .btn-empleados { background: #6366f1; }
+        .btn-bascula { background: #0891b2; }
+        .btn-chatbot { background: #0284c7; }
+        .btn-kiosco { background: #f59e0b; }
+        .btn-admin { background: #475569; padding: 8px 14px; font-size: 12px; }
+        .main-content { max-width: 1300px; margin: 30px auto; padding: 0 20px; }
+        @media (max-width: 900px) {
+            .nav-menu { display: none; }
+            .nav-menu.open { display: flex; flex-direction: column; position: absolute; top: 70px; left: 0; right: 0; background: #0f2b5c; padding: 20px; gap: 10px; }
+            .nav-btn { width: 100%; justify-content: center; }
         }
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="/" class="nav-brand">
-                <span class="logo">🏢</span>
-                <span class="logo-text">Sistema de Gestión</span>
-            </a>
-            
-            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-            
+            <a href="/" class="nav-brand">🏢 ProyectoPFD</a>
             <div class="nav-menu" id="navMenu">
-                <a href="/" class="nav-btn btn-inicio {% if request.path == '/' %}active{% endif %}">
-                    🏠 Inicio
-                </a>
-                <a href="/proveedores/" class="nav-btn btn-proveedores {% if '/proveedores/' in request.path %}active{% endif %}">
-                    👥 Proveedores
-                </a>
-                <a href="/productos/" class="nav-btn btn-productos {% if '/productos/' in request.path %}active{% endif %}">
-                    📦 Productos
-                </a>
-                <a href="/clientes/" class="nav-btn btn-clientes {% if '/clientes/' in request.path %}active{% endif %}">
-                    👤 Clientes
-                </a>
-                <a href="/bascula/" class="nav-btn btn-bascula {% if '/bascula/' in request.path %}active{% endif %}">
-                    ⚖️ Báscula
-                </a>
-                <!--a href="/admin/" class="nav-btn btn-admin {% if '/admin/' in request.path %}active{% endif %}">
-                    ⚙️ Admin
-                </a-->
+                <a href="/" class="nav-btn btn-inicio">🏠 Inicio</a>
+                <a href="/proveedores/" class="nav-btn btn-proveedores">👥 Proveedores</a>
+                <a href="/productos/" class="nav-btn btn-productos">📦 Productos</a>
+                <a href="/clientes/" class="nav-btn btn-clientes">👤 Clientes</a>
+                <a href="/empleados/" class="nav-btn btn-empleados">👔 Empleados</a>
+                <a href="/bascula/" class="nav-btn btn-bascula">⚖️ Báscula</a>
+                <a href="/chatbot/" class="nav-btn btn-chatbot">💬 Chat-Bot</a>
+                <a href="/chatbot/kiosco/" class="nav-btn btn-kiosco">🕒 Kiosco</a>
+                <a href="/admin/" class="nav-btn btn-admin">⚙️ Admin</a>
             </div>
         </div>
     </nav>
-    
     <div class="main-content">
-        {% block contenido %}
-        {% endblock %}
+        {% block contenido %}{% endblock %}
     </div>
-    
-    <script>
-        function toggleMenu() {
-            const menu = document.getElementById('navMenu');
-            menu.classList.toggle('open');
-        }
-        
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.getElementById('navMenu').classList.remove('open');
-            });
-        });
-        
-        document.addEventListener('click', function(event) {
-            const menu = document.getElementById('navMenu');
-            const toggle = document.querySelector('.menu-toggle');
-            if (!menu.contains(event.target) && !toggle.contains(event.target)) {
-                menu.classList.remove('open');
-            }
-        });
-    </script>
 </body>
 </html>

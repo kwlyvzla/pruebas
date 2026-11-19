@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block titulo %}Proveedores{% endblock %}
+{% block contenido %}
+<style>
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+    h1 { color: #0f2b5c; }
+    .btn-add { background: #2563eb; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; }
+    .btn-add:hover { background: #1d4ed8; }
+    .card { background: white; padding: 15px 20px; margin-bottom: 10px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,50,120,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .card strong { font-size: 17px; color: #0f2b5c; }
+    .detalle { color: #666; font-size: 13px; margin-top: 3px; }
+    .btn-edit { background: #ffc107; color: #333; padding: 7px 14px; border-radius: 6px; text-decoration: none; font-size: 13px; }
+    .btn-del { background: #dc3545; color: white; padding: 7px 14px; border-radius: 6px; text-decoration: none; font-size: 13px; margin-left: 6px; }
+    .vacio { text-align: center; padding: 40px; background: white; border-radius: 10px; color: #666; }
+</style>
+<div class="header">
+    <h1>👥 Proveedores</h1>
+    <a href="{% url 'agregar_proveedor' %}" class="btn-add">➕ Agregar Proveedor</a>
+</div>
+{% for p in proveedores %}
+    <div class="card">
+        <div>
+            <strong>{{ p.nombre }}</strong>
+            <div class="detalle">📍 {{ p.direccion }}</div>
+            {% if p.email %}<div class="detalle">📧 {{ p.email }}</div>{% endif %}
+            {% if p.rfc %}<div class="detalle">📄 RFC: {{ p.rfc }}</div>{% endif %}
+        </div>
+        <div>
+            <a href="{% url 'editar_proveedor' p.id %}" class="btn-edit">✏️ Editar</a>
+            <a href="{% url 'eliminar_proveedor' p.id %}" class="btn-del">🗑️ Eliminar</a>
+        </div>
+    </div>
+{% empty %}
+    <div class="vacio">No hay proveedores. <a href="{% url 'agregar_proveedor' %}">Agrega el primero</a></div>
+{% endfor %}
+{% endblock %}

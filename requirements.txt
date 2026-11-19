@@ -1,0 +1,4 @@
+django
+djangorestframework
+mssql-django
+pyodbc
